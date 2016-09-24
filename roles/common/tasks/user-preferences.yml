@@ -8,7 +8,7 @@
   register: primary_user_home
 
 - name: Install git
-  package: name={{ git_package }} state=latest
+  package: name={{ git_package }} state=installed
 
 - name: Checkout dotfiles repository
   git: repo={{ dotfiles_repository }} dest={{ primary_user_home.stdout }}/dotfiles
