@@ -1,0 +1,7 @@
+- include: user-account.yml
+
+- name: Disable SELinux
+  selinux: state=disabled
+  tags:
+    - bootstrap
+

@@ -1,0 +1,5 @@
+[production]
+kube01
+
+[test]
+kube01-test

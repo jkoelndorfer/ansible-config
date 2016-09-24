@@ -1,0 +1,3 @@
+[submodule "secret_vars"]
+	path = secret_vars
+	url = ssh://vcs.segv.us/srv/git/kdorf/ansible-secrets.git

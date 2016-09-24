@@ -1,0 +1,17 @@
+---
+
+- include_vars: "{{ ansible_os_family }}.yml"
+- include_vars: secret_vars/user-account.yml
+
+- name: Configure primary user
+  user: name={{ primary_user_username }} shell={{ preferred_shell }} group=users groups={{ sudo_group }} \
+        uid={{ primary_user_uid }} password={{ primary_user_password }}
+
+- name: Configure primary user authorized keys
+  authorized_key: user={{ primary_user_username }} key={{ item }}
+  with_items: "{{ primary_user_authorized_keys }}"
+
+- name: Install zsh
+  package: name={{ zsh_package }} state=latest
+
+- include: user-preferences.yml
