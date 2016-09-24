@@ -1,0 +1,2 @@
+- name: pull Docker registry container
+  docker_image: name=docker.io/registry
