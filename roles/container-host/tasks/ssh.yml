@@ -1,0 +1,23 @@
+- include_vars: ssh.yml
+- include_vars: secret_vars/user-account.yml
+
+- name: CentOS ssh image
+  docker_image:
+    name: jkoelndorfer/centos-shell
+    tag: "{{ centos_ssh_version }}"
+
+- name: CentOS ssh container
+  docker_container:
+    name:  ssh
+    image: "docker.io/jkoelndorfer/centos-shell:{{ centos_ssh_version }}"
+    state: started
+    published_ports: "22:22"
+    hostname: sh.segv.us
+    env:
+      SSH_AUTHORIZED_KEYS: "{{ primary_user_authorized_keys | join('\n') }}"
+      SSH_SUDO: "ALL=(ALL) NOPASSWD: ALL"
+      SSH_USER: "{{ primary_user_username }}"
+      SSH_USER_PASSWORD: "{{ primary_user_password }}"
+      SSH_USER_PASSWORD_HASHED: "true"
+      SSH_USER_SHELL: "{{ preferred_shell }}"
+      SSH_USER_ID: "{{ primary_user_uid }}"
