@@ -1,0 +1,3 @@
+owncloud_pg_username: owncloud
+owncloud_pg_version: 9.5.4
+owncloud_version: 8.0.15

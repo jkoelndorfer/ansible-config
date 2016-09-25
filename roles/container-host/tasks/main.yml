@@ -10,3 +10,4 @@
 - service: name={{ docker_service }} state=started enabled=true
 
 - include: docker-registry.yml
+- include: owncloud.yml

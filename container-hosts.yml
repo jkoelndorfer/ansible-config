@@ -1,0 +1,5 @@
+- name: configure container hosts
+  hosts: test
+
+  roles:
+    - container-host
