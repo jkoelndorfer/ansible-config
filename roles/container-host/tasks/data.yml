@@ -1,0 +1,8 @@
+- name: check for container data subvolume
+  command: btrfs subvolume show {{ container_data_directory }}
+  register: data_subvolume_result
+  ignore_errors: True
+
+- name: create container data subvolume
+  command: btrfs subvolume create {{ container_data_directory }}
+  when: data_subvolume_result | failed
