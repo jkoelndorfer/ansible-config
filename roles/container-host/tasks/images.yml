@@ -1,3 +1,0 @@
-- name: Postgres Docker image
-  docker_image:
-    name: docker.io/postgres:9.5.4
