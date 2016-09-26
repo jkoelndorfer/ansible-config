@@ -11,8 +11,3 @@
   package: name={{ docker_py_package }} state=installed
 
 - service: name={{ docker_service }} state=started enabled=true
-
-- include: docker-registry.yml
-- include: ssh.yml
-- include: owncloud.yml
-- include: mumble.yml

@@ -3,3 +3,6 @@
 
   roles:
     - container-host
+    - mumble
+    - owncloud
+    - ssh

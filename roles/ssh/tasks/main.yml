@@ -1,4 +1,3 @@
-- include_vars: ssh.yml
 - include_vars: secret_vars/user-account.yml
 
 - name: CentOS ssh image
