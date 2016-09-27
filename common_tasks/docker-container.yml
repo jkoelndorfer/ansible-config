@@ -4,6 +4,7 @@
     image: "{{ image }}"
     state: "{{ state }}"
     restart: "{{ restart | default(false) }}"
+    restart_policy: "{{ restart_policy | default('always') }}"
     expose: "{{ expose | default([]) }}"
     published_ports: "{{ published_ports | default([]) }}"
     links: "{{ links | default([]) }}"
