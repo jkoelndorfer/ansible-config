@@ -4,12 +4,14 @@
   docker_image:
     name: docker.io/postgres
     tag: "{{ owncloud_pg_version }}"
+    state: "{{ {'started': 'present'}.get(state) }}"
 
 - name: Owncloud database container
   docker_container:
     name:  owncloud-db
     image: "postgres:{{ owncloud_pg_version }}"
-    state: started
+    state: "{{ state }}"
+    restart: "{{ restart }}"
     env:
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
@@ -18,12 +20,14 @@
   docker_image:
     name: docker.io/owncloud
     tag: "{{ owncloud_version }}"
+    state: "{{ {'started': 'present'}.get(state) }}"
 
 - name: Owncloud application container
   docker_container:
     name:  owncloud-app
     image: "owncloud:{{ owncloud_version }}"
-    state: started
+    state: "{{ state }}"
+    restart: "{{ restart }}"
     published_ports: 80:80
     links:
       - owncloud-db:db
@@ -33,3 +37,4 @@
     name: danieldent/nginx-ssl-proxy
     # "latest" is the only available tag
     tag:  latest
+    state: "{{ {'started': 'present'}.get(state) }}"

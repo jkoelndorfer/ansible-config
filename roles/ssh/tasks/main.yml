@@ -4,12 +4,14 @@
   docker_image:
     name: jkoelndorfer/centos-shell
     tag: "{{ centos_ssh_version }}"
+    state: "{{ {'started': 'present'}.get(state) }}"
 
 - name: CentOS ssh container
   docker_container:
     name:  ssh
     image: "docker.io/jkoelndorfer/centos-shell:{{ centos_ssh_version }}"
-    state: started
+    state: "{{ state }}"
+    restart: "{{ restart }}"
     published_ports: "22:22"
     hostname: sh.segv.us
     env:

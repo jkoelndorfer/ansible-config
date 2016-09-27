@@ -1,5 +1,8 @@
-- name: configure container hosts
+- name: configure and run containers
   hosts: test
+  vars:
+    state: started
+    restart: no
 
   roles:
     - container-host
