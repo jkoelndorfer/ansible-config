@@ -2,6 +2,8 @@
   hosts: test
   vars:
     state: started
+  become: true
+  become_user: root
 
   roles:
     - container-host
