@@ -1,24 +1,17 @@
-- name: Mumble container image
-  docker_image:
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: Mumble container image
     name: luzifer/mumble
     tag: latest
-    state: "{{ {'started': 'present'}.get(state) }}"
 
-- file: path={{ container_config_directory }}/mumble state=directory owner={{ mumble_uid }}
+- include: config.yml
   when: (state == "present") or (state == "started")
 
-- file: path={{ container_data_directory }}/mumble state=directory owner={{ mumble_uid }}
-  when: (state == "present") or (state == "started")
-
-- template: src=mumble-server.ini.j2 dest={{ container_config_directory }}/mumble/mumble-server.ini owner={{ mumble_uid }}
-  when: (state == "present") or (state == "started")
-
-- name: Mumble container
-  docker_container:
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: Mumble container
     name:  mumble
     image: docker.io/luzifer/mumble:latest
-    state: "{{ state }}"
-    restart: "{{ restart }}"
     # This mumble container doesn't expose 64738/tcp like it should,
     # so we need to do it ourselves.
     expose:

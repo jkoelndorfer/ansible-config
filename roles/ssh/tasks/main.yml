@@ -1,17 +1,17 @@
 - include_vars: secret_vars/user-account.yml
 
-- name: CentOS ssh image
-  docker_image:
+#- include: ../../../common_tasks/docker-image.yml
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: CentOS ssh image
     name: jkoelndorfer/centos-shell
     tag: "{{ centos_ssh_version }}"
-    state: "{{ {'started': 'present'}.get(state) }}"
 
-- name: CentOS ssh container
-  docker_container:
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: CentOS ssh container
     name:  ssh
     image: "docker.io/jkoelndorfer/centos-shell:{{ centos_ssh_version }}"
-    state: "{{ state }}"
-    restart: "{{ restart }}"
     published_ports: "22:22"
     hostname: sh.segv.us
     env:

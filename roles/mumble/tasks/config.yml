@@ -1,0 +1,6 @@
+- file: path={{ container_config_directory }}/mumble state=directory owner={{ mumble_uid }}
+
+- file: path={{ container_data_directory }}/mumble state=directory owner={{ mumble_uid }}
+
+- template: src=mumble-server.ini.j2 dest={{ container_config_directory }}/mumble/mumble-server.ini owner={{ mumble_uid }}
+

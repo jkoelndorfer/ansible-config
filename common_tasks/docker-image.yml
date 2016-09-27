@@ -1,0 +1,7 @@
+- name: "{{ task_name }} ({{ {'started': 'present', 'stopped': 'present'}.get(state, state) }})"
+  docker_image:
+    name: "{{ name }}"
+    tag: "{{ tag }}"
+    force: "{{ {'absent': true }.get(state, false) }}"
+    state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
+  when: (restart is not defined) or (restart != true)

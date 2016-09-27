@@ -1,40 +1,38 @@
 - include_vars: secret_vars/owncloud.yml
 
-- name: Owncloud Postgres image
-  docker_image:
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: Owncloud Postgres image
     name: docker.io/postgres
     tag: "{{ owncloud_pg_version }}"
-    state: "{{ {'started': 'present'}.get(state) }}"
 
-- name: Owncloud database container
-  docker_container:
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: Owncloud Postgres container
     name:  owncloud-db
     image: "postgres:{{ owncloud_pg_version }}"
-    state: "{{ state }}"
-    restart: "{{ restart }}"
     env:
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
 
-- name: Owncloud application image
-  docker_image:
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: Owncloud application image
     name: docker.io/owncloud
     tag: "{{ owncloud_version }}"
-    state: "{{ {'started': 'present'}.get(state) }}"
 
-- name: Owncloud application container
-  docker_container:
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: Owncloud application container
     name:  owncloud-app
     image: "owncloud:{{ owncloud_version }}"
-    state: "{{ state }}"
-    restart: "{{ restart }}"
     published_ports: 80:80
     links:
       - owncloud-db:db
 
-- name: Owncloud SSL proxy image
-  docker_image:
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: Owncloud SSL proxy image
     name: danieldent/nginx-ssl-proxy
     # "latest" is the only available tag
     tag:  latest
-    state: "{{ {'started': 'present'}.get(state) }}"

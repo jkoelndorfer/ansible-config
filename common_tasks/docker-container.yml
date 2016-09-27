@@ -1,0 +1,12 @@
+- name: "{{ task_name }} ({{ state }})"
+  docker_container:
+    name:  "{{ name }}"
+    image: "{{ image }}"
+    state: "{{ state }}"
+    restart: "{{ restart | default(false) }}"
+    expose: "{{ expose | default([]) }}"
+    published_ports: "{{ published_ports | default([]) }}"
+    links: "{{ links | default([]) }}"
+    hostname: "{{ hostname | default(None) }}"
+    volumes: "{{ volumes | default([]) }}"
+    env: "{{ env | default({}) }}"

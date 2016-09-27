@@ -1,3 +1,14 @@
+- name: destroy containers
+  hosts: test
+  vars:
+    state: absent
+
+  roles:
+    - container-host
+    - mumble
+    - owncloud
+    - ssh
+
 - name: configure and run containers
   hosts: test
   vars:
