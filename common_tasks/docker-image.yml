@@ -2,6 +2,5 @@
   docker_image:
     name: "{{ name }}"
     tag: "{{ tag }}"
-    force: "{{ {'absent': true }.get(state, false) }}"
+    force: "{{ container_image_force | default(false) }}"
     state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
-  when: (restart is not defined) or (restart != true)

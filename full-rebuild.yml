@@ -2,6 +2,7 @@
   hosts: test
   vars:
     state: absent
+    container_image_force: true
   become: true
   become_user: root
 
