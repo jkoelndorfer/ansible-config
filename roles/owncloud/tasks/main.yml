@@ -26,7 +26,6 @@
     task_name: Owncloud application container
     name:  owncloud-app
     image: "owncloud:{{ owncloud_version }}"
-    published_ports: 80:80
     links:
       - owncloud-db:db
 
