@@ -1,6 +1,5 @@
 - include_vars: secret_vars/user-account.yml
 
-#- include: ../../../common_tasks/docker-image.yml
 - include: common_tasks/docker-image.yml
   vars:
     task_name: CentOS ssh image
