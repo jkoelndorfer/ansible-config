@@ -2,6 +2,10 @@
   command: btrfs subvolume show {{ container_data_directory }}
   register: data_subvolume_result
   ignore_errors: True
+  with_items: "{{ ansible_mounts }}"
+  when:
+    - item.mount == '/'
+    - item.fstype == 'btrfs'
 
 - name: create container data subvolume
   command: btrfs subvolume create {{ container_data_directory }}
