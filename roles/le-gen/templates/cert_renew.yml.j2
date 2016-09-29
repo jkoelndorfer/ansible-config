@@ -1,0 +1,9 @@
+email: {{ email }}
+tos_sha256: {{ tos_sha256 }}
+certs:
+{% for k, v in certs.iteritems() %}
+  {{ k }}:
+{% for domain in v %}
+    - {{ domain }}
+{% endfor %}
+{%- endfor %}

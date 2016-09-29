@@ -1,0 +1,2 @@
+- template: src=cert_renew.yml.j2 dest={{ container_config_directory }}/cert_renew.yml \
+            owner=root group=root mode=444

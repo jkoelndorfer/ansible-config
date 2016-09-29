@@ -1,0 +1,9 @@
+email: jkoelndorfer@gmail.com
+tos_sha256: "6373439b9f29d67a5cd4d18cbc7f264809342dbf21cb2ba2fc7588df987a6221"
+redirect_url: https://cloud.koelndorfer.com
+
+certs:
+  mumble:
+    - mumble.segv.us
+  owncloud:
+    - cloud.koelndorfer.com

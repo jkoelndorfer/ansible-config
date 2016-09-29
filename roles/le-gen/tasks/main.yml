@@ -1,0 +1,21 @@
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: le-gen container image
+    name: jkoelndorfer/le-gen
+    tag: latest
+
+- include: config.yml
+  when: (state == 'present') or (state == 'started')
+
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: le-gen container
+    name:  le-gen
+    image: jkoelndorfer/le-gen:latest
+    published_ports:
+      - "80:80"
+    volumes:
+      - "{{ container_config_directory }}/cert_renew.yml:/app/cert_renew.yml:ro"
+      - "{{ container_data_directory }}/certs:/certs:rw"
+    env:
+      REDIRECT_URL: "{{ redirect_url }}"
