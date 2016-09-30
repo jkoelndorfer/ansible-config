@@ -6,6 +6,8 @@
     name: jkoelndorfer/centos-shell
     tag: "{{ centos_ssh_version }}"
 
+- include: data.yml
+
 - include: common_tasks/docker-container.yml
   vars:
     task_name: CentOS ssh container
