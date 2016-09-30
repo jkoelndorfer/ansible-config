@@ -1,8 +1,9 @@
-- include: common_tasks/docker-image.yml
+- include: common_tasks/docker-image-from-git.yml
   vars:
     task_name: le-gen container image
-    name: jkoelndorfer/le-gen
+    name: le-gen
     tag: latest
+    git_repo: https://github.com/jkoelndorfer/le-gen
 
 - include: config.yml
   when: (state == 'present') or (state == 'started')
@@ -11,7 +12,7 @@
   vars:
     task_name: le-gen container
     name:  le-gen
-    image: jkoelndorfer/le-gen:latest
+    image: le-gen:latest
     published_ports:
       - "80:80"
     volumes:
