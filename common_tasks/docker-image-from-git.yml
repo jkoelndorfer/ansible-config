@@ -1,0 +1,5 @@
+- git: repo={{ git_repo }} dest={{ container_build_directory }}/{{ name }} version={{ git_version | default('HEAD') }}
+
+- include: common_tasks/docker-image.yml
+  vars:
+    path: "{{ container_build_directory }}/{{ name }}"

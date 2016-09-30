@@ -2,5 +2,6 @@
   docker_image:
     name: "{{ name }}"
     tag: "{{ tag }}"
+    path: "{{ path | default(None) }}"
     force: "{{ container_image_force | default(false) }}"
     state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"

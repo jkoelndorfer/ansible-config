@@ -1,4 +1,5 @@
 ---
+container_build_directory: /srv/container/build
 container_config_directory: /srv/container/config
 container_data_directory: /srv/container/data
 

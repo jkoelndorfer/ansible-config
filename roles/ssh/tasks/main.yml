@@ -1,10 +1,11 @@
 - include_vars: secret_vars/user-account.yml
 
-- include: common_tasks/docker-image.yml
+- include: common_tasks/docker-image-from-git.yml
   vars:
     task_name: CentOS ssh image
-    name: jkoelndorfer/centos-shell
-    tag: "{{ centos_ssh_version }}"
+    name: centos-shell
+    tag: latest
+    git_repo: https://github.com/jkoelndorfer/centos-shell
 
 - include: data.yml
 
@@ -12,14 +13,13 @@
   vars:
     task_name: CentOS ssh container
     name:  ssh
-    image: "docker.io/jkoelndorfer/centos-shell:{{ centos_ssh_version }}"
+    image: centos-shell
     published_ports: "22:22"
     hostname: sh.segv.us
+    volumes:
+      - "{{ container_data_directory }}/ssh/home:/home:rw"
+      - "{{ container_data_directory }}/ssh/host_keys:/etc/ssh/host_keys:rw"
     env:
-      SSH_AUTHORIZED_KEYS: "{{ primary_user_authorized_keys | join('\n') }}"
-      SSH_SUDO: "ALL=(ALL) NOPASSWD: ALL"
-      SSH_USER: "{{ primary_user_username }}"
-      SSH_USER_PASSWORD: "{{ primary_user_password }}"
-      SSH_USER_PASSWORD_HASHED: "true"
-      SSH_USER_SHELL: "{{ preferred_shell }}"
-      SSH_USER_ID: "{{ primary_user_uid }}"
+      USER_NAME: "{{ primary_user_username }}"
+      USER_SHELL: "{{ preferred_shell }}"
+      USER_ID: "{{ primary_user_uid }}"
