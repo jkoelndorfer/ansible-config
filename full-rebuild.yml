@@ -1,21 +1,8 @@
-- name: destroy containers
-  hosts: test
-  vars:
-    state: absent
-    container_image_force: true
-  become: true
-  become_user: root
-
-  roles:
-    - container-host
-    - mumble
-    - owncloud
-    - ssh
-
-- name: configure and run containers
+- name: rebuild and launch containers
   hosts: test
   vars:
     state: started
+    container_image_force: true
   become: true
   become_user: root
 
