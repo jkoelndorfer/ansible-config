@@ -7,7 +7,6 @@
   become_user: root
 
   roles:
-    - container-host
-    - mumble
-    - owncloud
-    - ssh
+    - { role: mumble,   tags: ['mumble'] }
+    - { role: owncloud, tags: ['owncloud'] }
+    - { role: ssh,      tags: ['ssh'] }
