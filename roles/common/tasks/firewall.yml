@@ -1,0 +1,4 @@
+- template: src=public.xml.j2 dest={{ firewalld_zones_config_directory }}/public.xml \
+            owner=root group=root mode=0444
+  notify:
+    - reload firewalld rules

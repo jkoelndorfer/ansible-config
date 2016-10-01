@@ -1,0 +1,5 @@
+- template: src=sshd_config.j2 dest={{ sshd_config_path }} owner=root group=root mode=0444
+  notify:
+    - restart sshd
+
+- service: name={{ sshd_service_name }} state=started enabled=yes

@@ -1,4 +1,6 @@
 - include: user-account.yml
+- include: firewall.yml
+- include: ssh.yml
 
 - name: Disable SELinux
   selinux: state=disabled

@@ -1,4 +1,8 @@
 ---
+firewalld_zones_config_directory: /etc/firewalld/zones
+
 sudo_group: wheel
 git_package: git
 zsh_package: zsh
+
+ssh_sftp_subsystem: /usr/libexec/openssh/sftp-server

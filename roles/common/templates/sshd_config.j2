@@ -1,0 +1,32 @@
+# Network settings
+Port                              {{ sshd_port }}
+Protocol                          2
+
+# Host keys
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Authentication settings
+PermitRootLogin                   without-password
+PubkeyAuthentication              yes
+AuthorizedKeysFile                .ssh/authorized_keys
+PasswordAuthentication            no
+ChallengeResponseAuthentication   no
+UsePAM                            yes
+PrintMotd                         no   # PAM prints the MOTD
+UsePrivilegeSeparation            sandbox
+
+# Environment variables to accept - mostly locale stuff
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+# Subsystems
+Subsystem                         sftp                   {{ ssh_sftp_subsystem }}
+
+# Other features
+AllowTcpForwarding yes
+X11Forwarding yes
+TCPKeepAlive yes
