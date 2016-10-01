@@ -1,6 +1,5 @@
 [production]
 legion.segv.us
-sh.segv.us
 
 [development]
 suramar.segv.us
@@ -20,10 +19,3 @@ suramar.segv.us
 [owncloud-container-host]
 legion.segv.us
 suramar.segv.us
-
-[shell-server]
-sh.segv.us
-shdev.segv.us
-
-[shell-server:children]
-container-host
