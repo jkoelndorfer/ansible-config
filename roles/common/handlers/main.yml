@@ -6,4 +6,4 @@
   notify: restart docker service
 
 - name: restart docker service
-  service: name=docker status=restarted
+  service: name=docker state=restarted
