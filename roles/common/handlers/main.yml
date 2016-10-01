@@ -3,7 +3,13 @@
 
 - name: reload firewalld rules
   command: /usr/bin/firewall-cmd --reload
-  notify: restart docker service
-
-- name: restart docker service
-  service: name=docker state=restarted
+  # Docker makes its own changes to iptables. Reloading the firewall
+  # rules via firewall-cmd will wipe out all of Docker's automatically
+  # configured rules, rendering containers inaccessible.
+  #
+  # Docker will reapply its firewall rules when it starts, so we restart
+  # it here. Unfortunately, this also restarts all of our running containers.
+  #
+  # TODO: Is there a way to tell Docker to reconfigure iptables without
+  # bouncing the entire service?
+  notify: restart docker service (if exists)

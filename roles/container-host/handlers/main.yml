@@ -1,0 +1,8 @@
+- name: restart docker service (if exists)
+  command: systemctl status docker
+  register: has_docker
+  ignore_errors: true
+  notify: restart docker service
+
+- name: restart docker service
+  service: name=docker state=restarted
