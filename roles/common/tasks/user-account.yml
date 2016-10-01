@@ -10,6 +10,8 @@
 - name: Configure primary user authorized keys
   authorized_key: user={{ primary_user_username }} key={{ item }}
   with_items: "{{ primary_user_authorized_keys }}"
+  become: true
+  become_user: "{{ primary_user_username }}"
 
 - name: Install zsh
   package: name={{ zsh_package }} state=installed

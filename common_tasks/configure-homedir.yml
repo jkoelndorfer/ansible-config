@@ -1,0 +1,20 @@
+- name: Configure user {{ username }} authorized keys
+  authorized_key: user={{ username }} key={{ item }}
+  with_items: "{{ authorized_keys }}"
+
+- name: Checkout dotfiles repository
+  git: repo={{ dotfiles_repository }} dest={{ directory }}/dotfiles
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Set dotfiles permissions
+  file: path={{ directory }}/dotfiles mode="u+rwX,go-w" owner={{ username }}
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Run dotfiles install script
+  shell: "{{ preferred_shell }} -l -c 'HOME=\"{{ directory }}\" SKIP_VIM_BUNDLE=y ./install'"
+  args:
+    chdir: "{{ directory }}/dotfiles"
+  become: yes
+  become_user: "{{ username }}"

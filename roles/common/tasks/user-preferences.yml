@@ -10,19 +10,8 @@
 - name: Install git
   package: name={{ git_package }} state=installed
 
-- name: Checkout dotfiles repository
-  git: repo={{ dotfiles_repository }} dest={{ primary_user_home.stdout }}/dotfiles
-  become: yes
-  become_user: "{{ primary_user_username }}"
-
-- name: Set dotfiles permissions
-  file: path={{ primary_user_home.stdout }}/dotfiles mode="u+rwX,go-w" owner={{ primary_user_username }}
-  become: yes
-  become_user: "{{ primary_user_username }}"
-
-- name: Run dotfiles install script
-  shell: "{{ preferred_shell }} -l -c 'SKIP_VIM_BUNDLE=y ./install'"
-  args:
-    chdir: "{{ primary_user_home.stdout }}/dotfiles"
-  become: yes
-  become_user: "{{ primary_user_username }}"
+- include: common_tasks/configure-homedir.yml
+  vars:
+    - username: "{{ primary_user_username }}"
+    - authorized_keys: "{{ primary_user_authorized_keys }}"
+    - directory: "{{ primary_user_home.stdout }}"
