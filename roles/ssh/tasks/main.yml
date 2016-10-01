@@ -14,7 +14,7 @@
     task_name: CentOS ssh container
     name:  ssh
     image: centos-shell
-    published_ports: "{{ ssh_container_port }}:22"
+    published_ports: "{{ ssh_container_port }}:{{ ssh_container_port }}"
     hostname: sh.segv.us
     volumes:
       - "{{ container_data_directory }}/ssh/home:/home:rw"
