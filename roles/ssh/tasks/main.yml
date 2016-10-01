@@ -2,18 +2,19 @@
 
 - include: common_tasks/docker-image-from-git.yml
   vars:
-    task_name: CentOS ssh image
-    name: centos-shell
+    task_name: Fedora ssh image
+    name: fedora-shell
     tag: latest
-    git_repo: https://github.com/jkoelndorfer/centos-shell
+    git_repo: https://github.com/jkoelndorfer/docker-shell
+    git_version: fedora
 
 - include: data.yml
 
 - include: common_tasks/docker-container.yml
   vars:
-    task_name: CentOS ssh container
+    task_name: Fedora ssh container
     name:  ssh
-    image: centos-shell
+    image: fedora-shell
     published_ports: "{{ ssh_container_port }}:{{ ssh_container_port }}"
     hostname: sh.segv.us
     volumes:
