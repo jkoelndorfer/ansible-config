@@ -1,5 +1,3 @@
-- file: path={{ container_data_directory }}/ssh/home state=directory owner=root group=root mode=0755
-
 - name: check for ssh data subvolume
   command: btrfs subvolume show {{ container_data_directory }}/ssh
   register: data_subvolume_result
@@ -12,3 +10,5 @@
 - name: create container ssh data subvolume
   command: btrfs subvolume create {{ container_data_directory }}/ssh
   when: data_subvolume_result | failed
+
+- file: path={{ container_data_directory }}/ssh/home state=directory owner=root group=root mode=0755
