@@ -1,7 +1,7 @@
 ---
 container_build_directory: /srv/container/build
 container_config_directory: /srv/container/config
-container_data_directory: /srv/container/data
+container_data_directory: /srv/data/container
 
 preferred_shell: /bin/zsh
 primary_user_uid: 5000
