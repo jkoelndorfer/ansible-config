@@ -1,5 +1,5 @@
-- name: rebuild and launch containers
-  hosts: test
+- name: rebuild and launch mumble container
+  hosts: container-host
   vars:
     state: started
     container_image_force: true
@@ -7,6 +7,26 @@
   become_user: root
 
   roles:
-    - { role: mumble,   tags: ['mumble'] }
+    - { role: mumble, tags: ['mumble'] }
+
+- name: rebuild and launch owncloud container
+  hosts: container-host
+  vars:
+    state: started
+    container_image_force: true
+  become: true
+  become_user: root
+
+  roles:
     - { role: owncloud, tags: ['owncloud'] }
-    - { role: ssh,      tags: ['ssh'] }
+
+- name: rebuild and launch ssh container
+  hosts: container-host
+  vars:
+    state: started
+    container_image_force: true
+  become: true
+  become_user: root
+
+  roles:
+    - { role: ssh, tags: ['ssh'] }

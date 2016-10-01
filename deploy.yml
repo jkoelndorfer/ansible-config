@@ -1,13 +1,34 @@
-- name: configure and run containers
-  hosts: test
-  vars:
-    state: started
+- name: configure container hosts
+  hosts: container-host
   become: true
   become_user: root
-
   roles:
-    - { role: common    tags: ['common'] }
+    - { role: common, tags: ['common'] }
     - { role: container-host, tags: ['container-host'] }
-    - { role: mumble,   tags: ['mumble'] }
+
+- name: configure mumble container
+  hosts: mumble-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: mumble, tags: ['mumble'] }
+
+- name: configure owncloud containers
+  hosts: owncloud-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
     - { role: owncloud, tags: ['owncloud'] }
-    - { role: ssh,      tags: ['ssh'] }
+
+- name: configure ssh container
+  hosts: ssh-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: ssh, tags: ['ssh'] }

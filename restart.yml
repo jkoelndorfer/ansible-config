@@ -1,12 +1,29 @@
-- name: restart containers
-  hosts: test
+- name: restart mumble container
+  hosts: container-host
   vars:
     state: started
     restart: yes
   become: true
   become_user: root
-
   roles:
-    - { role: mumble,   tags: ['mumble'] }
+    - { role: mumble, tags: ['mumble'] }
+
+- name: restart owncloud container
+  hosts: container-host
+  vars:
+    state: started
+    restart: yes
+  become: true
+  become_user: root
+  roles:
     - { role: owncloud, tags: ['owncloud'] }
-    - { role: ssh,      tags: ['ssh'] }
+
+- name: restart ssh container
+  hosts: container-host
+  vars:
+    state: started
+    restart: yes
+  become: true
+  become_user: root
+  roles:
+    - { role: ssh, tags: ['ssh'] }
