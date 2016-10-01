@@ -3,7 +3,6 @@
   vars:
     state: started
     container_image_force: true
-    container_nocache: true
   become: true
   become_user: root
 
@@ -15,7 +14,6 @@
   vars:
     state: started
     container_image_force: true
-    container_nocache: true
   become: true
   become_user: root
 
@@ -27,7 +25,6 @@
   vars:
     state: started
     container_image_force: true
-    container_nocache: true
   become: true
   become_user: root
 
