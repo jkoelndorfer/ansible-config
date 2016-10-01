@@ -1,5 +1,5 @@
 - name: Configure user {{ username }} authorized keys
-  authorized_key: user={{ username }} key={{ item }}
+  authorized_key: user={{ username }} key={{ item }} path={{ directory }}/.ssh/authorized_keys
   with_items: "{{ authorized_keys }}"
 
 - name: Checkout dotfiles repository
