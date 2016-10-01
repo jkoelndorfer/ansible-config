@@ -23,3 +23,5 @@
       USER_NAME: "{{ primary_user_username }}"
       USER_SHELL: "{{ preferred_shell }}"
       USER_ID: "{{ primary_user_uid }}"
+
+- include: user-preferences.yml
