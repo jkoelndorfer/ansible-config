@@ -33,3 +33,14 @@
 
   roles:
     - { role: ssh, tags: ['ssh'] }
+
+- name: rebuild and launch le-gen container
+  hosts: le-gen-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+    container_image_force: true
+    container_nocache: true
+  roles:
+    - { role: le-gen, tags: ['le-gen'] }
