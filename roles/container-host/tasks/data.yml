@@ -1,6 +1,6 @@
 - name: create data volume parent directory
   file: path={{ container_data_directory | dirname }} state=directory owner=root group=root \
-        mode=0755 recurse=yes
+        mode=0755
 
 - name: check for container data subvolume
   command: btrfs subvolume show {{ container_data_directory }}
