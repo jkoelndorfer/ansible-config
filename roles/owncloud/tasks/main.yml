@@ -1,5 +1,7 @@
 - include_vars: secret_vars/owncloud.yml
 
+- include: data.yml
+
 - include: common_tasks/docker-image.yml
   vars:
     task_name: Owncloud Postgres image
@@ -11,6 +13,8 @@
     task_name: Owncloud Postgres container
     name:  owncloud-db
     image: "postgres:{{ owncloud_pg_version }}"
+    volumes:
+      - "{{ container_data_directory }}/owncloud/db:/var/lib/postgresql/data"
     env:
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
@@ -26,12 +30,31 @@
     task_name: Owncloud application container
     name:  owncloud-app
     image: "owncloud:{{ owncloud_version }}"
+    volumes:
+      - "{{ container_data_directory }}/owncloud/app:/var/www/html"
     links:
       - owncloud-db:db
 
-- include: common_tasks/docker-image.yml
+- include: common_tasks/docker-image-from-git.yml
   vars:
     task_name: Owncloud SSL proxy image
-    name: danieldent/nginx-ssl-proxy
-    # "latest" is the only available tag
+    name: nginx-ssl-proxy
     tag:  latest
+    git_repo: https://github.com/jkoelndorfer/nginx-ssl-proxy
+
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: nginx SSL proxy container
+    name: nginx-ssl-proxy
+    image: nginx-ssl-proxy
+    published_ports: "443:443"
+    links:
+      - owncloud-app:owncloud
+    # TODO: Replace these with Let's Encrypt certs.
+    volumes:
+      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.crtbundle:/etc/secrets/proxycert"
+      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.key:/etc/secrets/proxykey"
+      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.dhparam:/etc/secrets/dhparam"
+    env:
+      ENABLE_SSL: true
+      TARGET_SERVICE: owncloud
