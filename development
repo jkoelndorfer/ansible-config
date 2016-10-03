@@ -1,24 +1,14 @@
-[production]
-legion.segv.us
-
-[development]
-suramar.segv.us
-
 [container-host]
-legion.segv.us
 suramar.segv.us
 
 [ssh-container-host]
-legion.segv.us
 suramar.segv.us
 
 [mumble-container-host]
-legion.segv.us
 suramar.segv.us
 
 [owncloud-container-host]
-legion.segv.us
 suramar.segv.us
 
 [le-gen-container-host]
-legion.segv.us
+suramar.segv.us
