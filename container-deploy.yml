@@ -1,4 +1,4 @@
-- name: "{{ container_action }} container hosts"
+- name: "deploy container hosts"
   hosts: container-host
   become: true
   become_user: root
