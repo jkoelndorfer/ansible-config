@@ -4,6 +4,7 @@
 
 - name: Checkout dotfiles repository
   git: repo={{ dotfiles_repository }} dest={{ directory }}/dotfiles
+  register: dotfiles_checkout
   become: yes
   become_user: "{{ username }}"
 
@@ -18,3 +19,4 @@
     chdir: "{{ directory }}/dotfiles"
   become: yes
   become_user: "{{ username }}"
+  when: dotfiles_checkout | changed
