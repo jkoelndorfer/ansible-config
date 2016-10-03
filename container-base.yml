@@ -1,0 +1,35 @@
+- name: "{{ container_play_action }} mumble container"
+  hosts: mumble-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: mumble, tags: ['mumble'] }
+
+- name: "{{ container_play_action }} owncloud containers"
+  hosts: owncloud-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: owncloud, tags: ['owncloud'] }
+
+- name: "{{ container_play_action }} ssh container"
+  hosts: ssh-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: ssh, tags: ['ssh'] }
+
+- name: "{{ container_play_action }} le-gen container"
+  hosts: le-gen-container-host
+  become: true
+  become_user: root
+  vars:
+    state: started
+  roles:
+    - { role: le-gen, tags: ['le-gen'] }

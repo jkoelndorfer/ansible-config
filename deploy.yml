@@ -1,4 +1,4 @@
-- name: configure container hosts
+- name: "{{ container_action }} container hosts"
   hosts: container-host
   become: true
   become_user: root
@@ -6,38 +6,7 @@
     - { role: common, tags: ['common'] }
     - { role: container-host, tags: ['container-host'] }
 
-- name: configure mumble container
-  hosts: mumble-container-host
-  become: true
-  become_user: root
+- include: container-base.yml
   vars:
+    container_play_action: deploy
     state: started
-  roles:
-    - { role: mumble, tags: ['mumble'] }
-
-- name: configure owncloud containers
-  hosts: owncloud-container-host
-  become: true
-  become_user: root
-  vars:
-    state: started
-  roles:
-    - { role: owncloud, tags: ['owncloud'] }
-
-- name: configure ssh container
-  hosts: ssh-container-host
-  become: true
-  become_user: root
-  vars:
-    state: started
-  roles:
-    - { role: ssh, tags: ['ssh'] }
-
-- name: configure le-gen container
-  hosts: le-gen-container-host
-  become: true
-  become_user: root
-  vars:
-    state: started
-  roles:
-    - { role: le-gen, tags: ['le-gen'] }

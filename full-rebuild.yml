@@ -1,46 +1,6 @@
-- name: rebuild and launch mumble container
-  hosts: container-host
+- include: container-base.yml
   vars:
     state: started
+    container_play_action: full rebuild
     container_image_force: true
     container_nocache: true
-  become: true
-  become_user: root
-
-  roles:
-    - { role: mumble, tags: ['mumble'] }
-
-- name: rebuild and launch owncloud container
-  hosts: container-host
-  vars:
-    state: started
-    container_image_force: true
-    container_nocache: true
-  become: true
-  become_user: root
-
-  roles:
-    - { role: owncloud, tags: ['owncloud'] }
-
-- name: rebuild and launch ssh container
-  hosts: container-host
-  vars:
-    state: started
-    container_image_force: true
-    container_nocache: true
-  become: true
-  become_user: root
-
-  roles:
-    - { role: ssh, tags: ['ssh'] }
-
-- name: rebuild and launch le-gen container
-  hosts: le-gen-container-host
-  become: true
-  become_user: root
-  vars:
-    state: started
-    container_image_force: true
-    container_nocache: true
-  roles:
-    - { role: le-gen, tags: ['le-gen'] }
