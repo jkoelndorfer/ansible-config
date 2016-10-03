@@ -24,5 +24,6 @@
       USER_NAME: "{{ primary_user_username }}"
       USER_SHELL: "{{ preferred_shell }}"
       USER_ID: "{{ primary_user_uid }}"
+      TIMEZONE: "{{ timezone }}"
 
 - include: user-preferences.yml
