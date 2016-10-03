@@ -15,3 +15,6 @@ legion.segv.us
 
 [le-gen-container-host]
 legion.segv.us
+
+[crashplan-container-host]
+legion.segv.us

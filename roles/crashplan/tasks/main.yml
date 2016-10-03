@@ -1,0 +1,23 @@
+- include: common_tasks/docker-image-from-git.yml
+  vars:
+    task_name: Crashplan image
+    name: docker-crashplan
+    git_repo: https://github.com/jkoelndorfer/docker-crashplan
+    tag: latest
+
+- include: common_tasks/container-data.yml
+  vars:
+    container_name: crashplan
+    owner: root
+    group: root
+    mode: '0700'
+
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: Crashplan container
+    name: crashplan
+    image: docker-crashplan:latest
+    volumes:
+      - "/srv/data/hd0000:/srv/data/hd0000:rw"
+      - "/srv/data/container:/srv/data/container:rw"
+      - "{{ container_data_directory }}/crashplan:/var/crashplan:rw"

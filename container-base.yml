@@ -25,3 +25,10 @@
   become_user: root
   roles:
     - { role: le-gen, tags: ['le-gen'] }
+
+- name: "{{ container_play_action }} Crashplan container"
+  hosts: crashplan-container-host
+  become: true
+  become_user: root
+  roles:
+    - { role: crashplan, tags: ['crashplan'] }
