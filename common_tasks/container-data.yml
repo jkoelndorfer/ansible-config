@@ -1,0 +1,16 @@
+- name: check for {{ container_name }} data subvolume
+  command: btrfs subvolume show {{ container_data_directory }}/{{ container_name }}
+  register: container_data_subvolume_result
+  ignore_errors: True
+  with_items: "{{ ansible_mounts }}"
+  when:
+    - item.mount == '/'
+    - item.fstype == 'btrfs'
+
+- name: create container {{ container_name }} data subvolume
+  command: btrfs subvolume create {{ container_data_directory }}/{{ container_name }}
+  when: container_data_subvolume_result | failed
+
+- file: path={{ container_data_directory }}/{{ container_name }} state=directory \
+        owner={{ owner | default('root') }} group={{ group | default('root') }} \
+        mode={{ mode | default('0700') }}
