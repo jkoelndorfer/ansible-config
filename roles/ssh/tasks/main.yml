@@ -15,7 +15,7 @@
     task_name: Fedora ssh container
     name:  ssh
     image: fedora-shell
-    published_ports: "{{ ssh_container_port }}:{{ ssh_container_port }}"
+    published_ports: "{{ ssh_container_port }}:22"
     hostname: sh.segv.us
     volumes:
       - "{{ container_data_directory }}/ssh/home:/home:rw"
