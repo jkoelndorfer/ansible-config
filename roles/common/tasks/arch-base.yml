@@ -1,0 +1,5 @@
+- name: install sudo
+  package: name=sudo state=installed
+
+- name: install btrfs progs
+  package: name=btrfs-progs state=installed

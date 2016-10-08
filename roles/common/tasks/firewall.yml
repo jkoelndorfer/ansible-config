@@ -1,4 +1,5 @@
 - template: src=public.xml.j2 dest={{ firewalld_zones_config_directory }}/public.xml \
             owner=root group=root mode=0444
+  when: ansible_os_family == "RedHat"
   notify:
     - reload firewalld rules

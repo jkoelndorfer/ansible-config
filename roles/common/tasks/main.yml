@@ -1,3 +1,6 @@
+- include: arch-base.yml
+  when: ansible_os_family == "Archlinux"
+
 - include: user-account.yml
 - include: firewall.yml
 - include: ssh.yml
@@ -7,11 +10,6 @@
   with_items: "{{ primary_user_authorized_keys }}"
   become: true
   become_user: root
-
-- name: Disable SELinux
-  selinux: state=disabled
-  tags:
-    - bootstrap
 
 - template: src=sudo-nopasswd.j2 dest=/etc/sudoers.d/sudo-nopasswd owner=root group=root mode=0400
             validate='visudo -cf %s'
