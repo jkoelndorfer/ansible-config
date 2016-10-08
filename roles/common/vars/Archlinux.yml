@@ -4,3 +4,17 @@ zsh_package: zsh
 
 ssh_sftp_subsystem: /usr/lib/ssh/sftp-server
 
+utility_packages:
+  - bind-tools
+  - dmidecode
+  - git
+  - htop
+  - neovim
+  - net-tools
+  - nmap
+  - python
+  - python2
+  - ruby
+  - sysdig
+  - tcpdump
+  - tmux

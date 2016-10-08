@@ -5,6 +5,10 @@
 - include: firewall.yml
 - include: ssh.yml
 
+- name: Install utility packages
+  package: name={{ item }} state=installed
+  with_items: "{{ utility_packages }}"
+
 - name: Configure root authorized keys
   authorized_key: user=root key={{ item }}
   with_items: "{{ primary_user_authorized_keys }}"
