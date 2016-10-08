@@ -5,6 +5,15 @@
 - include: firewall.yml
 - include: ssh.yml
 
+- name: primary data subvolume
+  include: common_tasks/subvolume.yml
+  vars:
+    name: primary data
+    path: /srv/data
+    owner: root
+    group: root
+    mode: "0755"
+
 - name: Install utility packages
   package: name={{ item }} state=installed
   with_items: "{{ utility_packages }}"

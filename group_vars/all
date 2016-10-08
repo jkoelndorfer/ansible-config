@@ -3,6 +3,8 @@ container_build_directory: /srv/container/build
 container_config_directory: /srv/container/config
 container_data_directory: /srv/data/container
 
+data_directory: /srv/data
+
 dotfiles_repository: git://github.com/jkoelndorfer/dotfiles.git
 
 preferred_shell: /bin/zsh
