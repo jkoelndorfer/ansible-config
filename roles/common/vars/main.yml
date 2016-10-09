@@ -1,3 +1,2 @@
 sshd_config_path: /etc/ssh/sshd_config
-sshd_port: '225'
 sshd_service_name: sshd

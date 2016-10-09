@@ -10,4 +10,6 @@ dotfiles_repository: git://github.com/jkoelndorfer/dotfiles.git
 preferred_shell: /bin/zsh
 primary_user_uid: 500
 
+ssh_port: 225
+
 timezone: America/Chicago
