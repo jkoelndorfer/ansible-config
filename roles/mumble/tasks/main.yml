@@ -21,5 +21,7 @@
       - "64738:64738"
       - "64738:64738/udp"
     volumes:
-      - "{{ container_config_directory }}/mumble:/config:ro"
+      - "{{ container_config_directory }}/mumble:/config:rw"
+      - "{{ container_data_directory }}/certs/mumble/fullchain.pem:/config/ssl.crt:ro"
+      - "{{ container_data_directory }}/certs/mumble/key.pem:/config/ssl.key:ro"
       - "{{ container_data_directory }}/mumble:/data:rw"
