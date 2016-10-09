@@ -1,5 +1,6 @@
-- name: install sudo
-  package: name=sudo state=installed
-
-- name: install btrfs progs
-  package: name=btrfs-progs state=installed
+- name: install needed system packages
+  package: name={{ item }} state=installed
+  with_items:
+    - btrfs-progs
+    - python
+    - sudo
