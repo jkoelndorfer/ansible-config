@@ -42,6 +42,13 @@
     tag:  latest
     git_repo: https://github.com/jkoelndorfer/nginx-ssl-proxy
 
+- name: ssl proxy configuration directory
+  file: path={{ container_config_directory }}/ssl-proxy state=directory mode=0755
+
+- name: ssl proxy Diffie-Hellman parameters
+  command: openssl dhparam -out {{ container_config_directory }}/ssl-proxy/dhparam 2048 \
+           creates={{ container_config_directory }}/ssl-proxy/dhparam
+
 - include: common_tasks/docker-container.yml
   vars:
     task_name: nginx SSL proxy container
@@ -53,7 +60,7 @@
     volumes:
       - "{{ container_data_directory }}/certs/owncloud/fullchain.pem:/etc/secrets/proxycert"
       - "{{ container_data_directory }}/certs/owncloud/key.pem:/etc/secrets/proxykey"
-      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.dhparam:/etc/secrets/dhparam"
+      - "{{ container_config_directory }}/ssl-proxy/dhparam:/etc/secrets/dhparam"
     env:
       ENABLE_SSL: true
       TARGET_SERVICE: owncloud
