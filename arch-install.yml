@@ -88,7 +88,7 @@
       - systemd-resolved
 
   - name: configure /etc/resolv.conf
-    file: state=link src=/run/systemd/resolve/resolv.conf dest={{ arch_install_root }}/etc/resolv.conf
+    file: state=link src=/run/systemd/resolve/resolv.conf dest={{ arch_install_root }}/etc/resolv.conf force=yes
 
   - name: find root device
     shell: echo "{{ item.device }}" | sed -re 's/[0-9]*$//'
