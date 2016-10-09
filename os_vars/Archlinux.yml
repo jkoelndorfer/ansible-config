@@ -4,4 +4,3 @@ preferred_arch_mirrors:
   - http://mirrors.lug.mtu.edu/archlinux/$repo/os/$arch
   - http://mirrors.lug.mtu.edu/archlinux/$repo/os/$arch
   - http://archlinux.surlyjake.com/archlinux/$repo/os/$arch
-
