@@ -1,0 +1,13 @@
+- name: try ssh on port 22
+  wait_for: host={{ ansible_host }} port=22 state=started connect_timeout=2 timeout=2
+  connection: local
+  ignore_errors: true
+  register: ssh_port_check
+
+- name: use port 22 for ssh
+  set_fact: ansible_port=22
+  when: ssh_port_check | success
+
+- name: use defined ssh_port
+  set_fact: ansible_port={{ ssh_port }}
+  when: ssh_port_check | failed
