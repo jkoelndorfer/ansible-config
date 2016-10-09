@@ -50,10 +50,9 @@
     published_ports: "443:443"
     links:
       - owncloud-app:owncloud
-    # TODO: Replace these with Let's Encrypt certs.
     volumes:
-      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.crtbundle:/etc/secrets/proxycert"
-      - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.key:/etc/secrets/proxykey"
+      - "{{ container_data_directory }}/certs/owncloud/fullchain.pem:/etc/secrets/proxycert"
+      - "{{ container_data_directory }}/certs/owncloud/key.pem:/etc/secrets/proxykey"
       - "{{ container_config_directory }}/owncloud/cloud.koelndorfer.com.dhparam:/etc/secrets/dhparam"
     env:
       ENABLE_SSL: true
