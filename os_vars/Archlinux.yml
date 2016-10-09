@@ -1,0 +1,7 @@
+arch_install_root: /mnt
+ansible_python_interpreter: /usr/bin/python2
+preferred_arch_mirrors:
+  - http://mirrors.lug.mtu.edu/archlinux/$repo/os/$arch
+  - http://mirrors.lug.mtu.edu/archlinux/$repo/os/$arch
+  - http://archlinux.surlyjake.com/archlinux/$repo/os/$arch
+
