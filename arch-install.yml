@@ -23,6 +23,10 @@
   - fail: msg="You must partition and mount filesystems under {{ arch_install_root }}"
     when: mounted_root | failed
 
+  # We need this to symlink resolv.conf to systemd's version later.
+  - name: start systemd-resolved
+    service: state=started name=systemd-resolved
+
   - name: configure mirrorlist
     copy: dest=/etc/pacman.d/mirrorlist \
           content="{{ preferred_arch_mirrors | map('regex_replace', '^(.*)$', 'Server = \\1') | join('\n') }}\n"
@@ -59,9 +63,6 @@
   - name: permit root login via ssh
     shell: sed -rie "s/^#PermitRootLogin.*$/PermitRootLogin yes/" {{ arch_install_root }}/etc/ssh/sshd_config
 
-  - name: enable sshd
-    shell: arch-chroot {{ arch_install_root }} systemctl enable sshd.service
-
   - name: set root password
     # Set the root password to ansible_password for now. We'll want to log back in after reboot to do the "real"
     # host configuration.
@@ -76,10 +77,18 @@
       type: "{{ item.type }}"
       ip: "{{ item.ip }}"
       gateway: "{{ item.gateway }}"
+      dns: "{{ item.dns }}"
     with_items: "{{ networking_configuration }}"
 
-  - name: enable systemd-networkd
-    shell: arch-chroot {{ arch_install_root }} systemctl enable systemd-networkd.service
+  - name: enable network services
+    shell: arch-chroot {{ arch_install_root }} systemctl enable {{ item }}.service
+    with_items:
+      - sshd
+      - systemd-networkd
+      - systemd-resolved
+
+  - name: configure /etc/resolv.conf
+    file: state=link src=/run/systemd/resolve/resolv.conf dest={{ arch_install_root }}/etc/resolv.conf
 
   - name: find root device
     shell: echo "{{ item.device }}" | sed -re 's/[0-9]*$//'
