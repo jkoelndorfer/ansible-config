@@ -1,0 +1,24 @@
+- hosts: all
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: include Arch Linux variables
+      include_vars: "os_vars/Archlinux.yml"
+      tags:
+        - always
+
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: ensure root is mounted on {{ arch_install_root }}
+    shell: mount | grep -q 'on {{ arch_install_root }}'
+
+  - name: configure mirrorlist
+    copy: dest=/etc/pacman.d/mirrorlist \
+          content="{{ preferred_arch_mirrors | map('regex_replace', '^(.*)$', 'Server = \\1') | join('\n') }}\n"
+
+  - name: install base packages
+    command: pacstrap {{ arch_install_root }} base
+
+  - name: generate fstab
+    shell: genfstab -U {{ arch_install_root }} >> {{ arch_install_root }}/etc/fstab
