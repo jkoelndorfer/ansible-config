@@ -1,0 +1,10 @@
+[Match]
+Name={{ name }}
+
+[Network]
+{% if type == 'dhcp' %}
+DHCP=ipv4
+{% else %}
+Address={{ ip }}
+Gateway={{ gateway }}
+{% endif %}

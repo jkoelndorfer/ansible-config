@@ -7,18 +7,103 @@
       tags:
         - always
 
+    - name: detect ssh port
+      include: common_tasks/detect-ssh-port.yml
+      tags:
+        - always
+
 - hosts: all
   remote_user: root
   tasks:
   - name: ensure root is mounted on {{ arch_install_root }}
     shell: mount | grep -q 'on {{ arch_install_root }}'
+    ignore_errors: true
+    register: mounted_root
+
+  - fail: msg="You must partition and mount filesystems under {{ arch_install_root }}"
+    when: mounted_root | failed
 
   - name: configure mirrorlist
     copy: dest=/etc/pacman.d/mirrorlist \
           content="{{ preferred_arch_mirrors | map('regex_replace', '^(.*)$', 'Server = \\1') | join('\n') }}\n"
 
   - name: install base packages
-    command: pacstrap {{ arch_install_root }} base
+    command: pacstrap {{ arch_install_root }} base grub python2 openssh
 
   - name: generate fstab
-    shell: genfstab -U {{ arch_install_root }} >> {{ arch_install_root }}/etc/fstab
+    shell: genfstab -U {{ arch_install_root }} > {{ arch_install_root }}/etc/fstab
+
+  - name: configure time zone
+    file: state=link src=/usr/share/zoneinfo/{{ timezone }} dest={{ arch_install_root }}/etc/localtime
+
+  - name: generate /etc/adjtime
+    shell: arch-chroot {{ arch_install_root }} hwclock --systohc
+
+  - name: configure locale
+    shell: arch-chroot {{ arch_install_root }} \
+           bash -c 'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; echo "LANG=en_US.UTF-8" > /etc/locale.conf'
+
+  - name: set system hostname
+    shell: echo {{ inventory_hostname }} > {{ arch_install_root }}/etc/hostname
+
+  - name: add hostname to /etc/hosts
+    shell: sed -rie "/^\s*127.0.0.1/ s/$/ {{ inventory_hostname }} {{ inventory_hostname.split('.')[0] }}/" {{ arch_install_root }}/etc/hosts
+
+  - name: generate initial RAM disk
+    shell: arch-chroot {{ arch_install_root }} mkinitcpio -p linux
+    # This command will return a non-zero exit code since it can't find a btrfs fsck helper.
+    # TODO: Better way to check for errors here?
+    ignore_errors: true
+
+  # Permit root login and enable sshd so that we can follow up with proper configuration
+  - name: permit root login via ssh
+    shell: sed -rie "s/^#PermitRootLogin.*$/PermitRootLogin yes/" {{ arch_install_root }}/etc/ssh/sshd_config
+
+  - name: enable sshd
+    shell: arch-chroot {{ arch_install_root }} systemctl enable sshd.service
+
+  - name: set root password
+    # Set the root password to ansible_password for now. We'll want to log back in after reboot to do the "real"
+    # host configuration.
+    shell: echo "root:{{ ansible_password }}" | chpasswd -R {{ arch_install_root }}
+
+  - name: configure networking
+    template: src=common_templates/systemd-networkd.network.j2 \
+              dest={{ arch_install_root }}/etc/systemd/network/{{ item.name }}.network \
+              owner=root group=root mode=0444
+    vars:
+      name: "{{ item.name }}"
+      type: "{{ item.type }}"
+      ip: "{{ item.ip }}"
+      gateway: "{{ item.gateway }}"
+    with_items: "{{ networking_configuration }}"
+
+  - name: enable systemd-networkd
+    shell: arch-chroot {{ arch_install_root }} systemctl enable systemd-networkd.service
+
+  - name: find root device
+    shell: echo "{{ item.device }}" | sed -re 's/[0-9]*$//'
+    register: disk_device_list
+    with_items: "{{ ansible_mounts }}"
+    when:
+      - item.mount == "{{ arch_install_root }}"
+
+  - name: set root device fact
+    set_fact: root_device={{ (disk_device_list.results | reject('skipped', True) | first).stdout }}
+
+  - debug: msg="root device is {{ root_device }}"
+
+  # NOTE: This assumes a system that boots via BIOS.
+  #
+  # TODO: Detect BIOS or UEFI and configure accordigly.
+  - name: install grub to root disk
+    shell: arch-chroot {{ arch_install_root }} grub-install --target=i386-pc {{ root_device }}
+
+  - name: generate grub configuration
+    shell: arch-chroot {{ arch_install_root }} grub-mkconfig -o /boot/grub/grub.cfg
+
+  - name: reboot
+    shell: systemctl reboot
+    async: 0
+    poll: 0
+    ignore_errors: true
