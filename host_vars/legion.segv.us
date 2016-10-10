@@ -1,0 +1,8 @@
+networking_configuration:
+ - name: enp1s0
+   type: static
+   ip: "10.0.2.1/16"
+   gateway: "10.0.0.1"
+   dns: "10.0.0.1"
+
+# vim: ft=yaml
