@@ -7,6 +7,8 @@ data_directory: /srv/data
 
 dotfiles_repository: git://github.com/jkoelndorfer/dotfiles.git
 
+makepkg_nonroot_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+
 preferred_shell: /bin/zsh
 primary_user_uid: 500
 
