@@ -1,6 +1,13 @@
 - name: install needed system packages
   package: name={{ item }} state=installed
   with_items:
+    - base-devel
     - btrfs-progs
     - python
     - sudo
+
+- name: install cower
+  include: common_tasks/aur-pkg.yml pkg_name=cower
+
+- name: install pacaur
+  include: common_tasks/aur-pkg.yml pkg_name=pacaur
