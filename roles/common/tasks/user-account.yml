@@ -1,7 +1,10 @@
 ---
 
-- include_vars: "{{ ansible_os_family }}.yml"
-- include_vars: secret_vars/user-account.yml
+- name: Include OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include user account secret variables
+  include_vars: secret_vars/user-account.yml
 
 - name: Configure primary user
   user: name={{ primary_user_username }} shell={{ preferred_shell }} group=users groups={{ sudo_group }} \

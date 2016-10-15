@@ -21,7 +21,8 @@
   become: true
   become_user: root
 
-- template: src=sudo-nopasswd.j2 dest=/etc/sudoers.d/sudo-nopasswd owner=root group=root mode=0400
+- name: sudo nopasswd configuration
+  template: src=sudo-nopasswd.j2 dest=/etc/sudoers.d/sudo-nopasswd owner=root group=root mode=0400
             validate='visudo -cf %s'
 
 - include: arch-base.yml

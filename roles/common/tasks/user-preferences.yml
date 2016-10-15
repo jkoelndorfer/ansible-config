@@ -1,7 +1,10 @@
 ---
 
-- include_vars: "{{ ansible_os_family }}.yml"
-- include_vars: secret_vars/user-account.yml
+- name: include OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include user account secret variables
+  include_vars: secret_vars/user-account.yml
 
 - name: Get primary user home
   shell: "getent passwd {{ primary_user_username }} | awk -F: '{ print $6 }'"
