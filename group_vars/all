@@ -7,6 +7,11 @@ data_directory: /srv/data
 
 dotfiles_repository: git://github.com/jkoelndorfer/dotfiles.git
 
+# Where we keep site-specific information, such as the local-tools
+# repository and configuration for local-tools scripts.
+local_directory: /opt/local
+local_tools_repo: https://github.com/jkoelndorfer/local-tools.git
+
 makepkg_nonroot_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
 
 preferred_shell: /bin/zsh

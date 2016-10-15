@@ -27,3 +27,5 @@
 
 - include: arch-base.yml
   when: ansible_os_family == "Archlinux"
+
+- include: local.yml
