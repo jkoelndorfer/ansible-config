@@ -14,6 +14,8 @@ utility_packages:
   - nmap
   - python
   - python2
+  - python2-neovim
+  - python-neovim
   - ruby
   - sudo
   - sysdig
