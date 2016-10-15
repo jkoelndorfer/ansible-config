@@ -4,7 +4,6 @@
     - base-devel
     - btrfs-progs
     - python
-    - sudo
 
 - name: install cower
   include: common_tasks/aur-pkg.yml pkg_name=cower

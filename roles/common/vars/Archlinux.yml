@@ -15,6 +15,7 @@ utility_packages:
   - python
   - python2
   - ruby
+  - sudo
   - sysdig
   - tcpdump
   - tmux
