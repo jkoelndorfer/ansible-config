@@ -1,19 +1,13 @@
-- include: user-account.yml
-- include: firewall.yml
-- include: ssh.yml
-
-- name: primary data subvolume
-  include: common_tasks/subvolume.yml
-  vars:
-    name: primary data
-    path: /srv/data
-    owner: root
-    group: root
-    mode: "0755"
+- name: include OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Install utility packages
   package: name={{ item }} state=installed
   with_items: "{{ utility_packages }}"
+
+- include: user-account.yml
+- include: firewall.yml
+- include: ssh.yml
 
 - name: Configure root authorized keys
   authorized_key: user=root key={{ item }}
@@ -29,3 +23,12 @@
   when: ansible_os_family == "Archlinux"
 
 - include: local.yml
+
+- name: primary data subvolume
+  include: common_tasks/subvolume.yml
+  vars:
+    name: primary data
+    path: /srv/data
+    owner: root
+    group: root
+    mode: "0755"
