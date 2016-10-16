@@ -11,3 +11,5 @@
     hostname: "{{ hostname | default(None) }}"
     volumes: "{{ volumes | default([]) }}"
     env: "{{ env | default({}) }}"
+    tty: true
+    interactive: true
