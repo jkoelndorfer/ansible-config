@@ -5,4 +5,12 @@ networking_configuration:
    gateway: "10.0.0.1"
    dns: "10.0.0.1"
 
+terraria_worlds:
+  - world_name: main
+    world_size: medium
+    port: "7777"
+  - world_name: exploratory
+    world_size: large
+    port: "7778"
+
 # vim: ft=yaml
