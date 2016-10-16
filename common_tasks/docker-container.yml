@@ -3,6 +3,7 @@
     name:  "{{ name }}"
     image: "{{ image }}"
     state: "{{ state }}"
+    command: "{{ command }}"
     restart: "{{ restart | default(false) }}"
     restart_policy: "{{ restart_policy | default('always') }}"
     expose: "{{ expose | default([]) }}"
