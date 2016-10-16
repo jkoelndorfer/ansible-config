@@ -32,3 +32,10 @@
   become_user: root
   roles:
     - { role: crashplan, tags: ['crashplan'] }
+
+- name: "{{ container_play_action }} Terraria container"
+  hosts: terraria-container-host
+  become: true
+  become_user: root
+  roles:
+    - { role: terraria, tags: ['terraria'] }

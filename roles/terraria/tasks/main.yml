@@ -1,0 +1,26 @@
+- include: common_tasks/docker-image.yml
+  vars:
+    task_name: Terraria server container image
+    name: ryshe/terraria
+    tag: latest
+
+- include: common_tasks/container-data.yml
+  vars:
+    container_name: terraria
+    owner: root
+    group: root
+    mode: '0755'
+
+- file: path={{ container_data_directory }}/terraria/main state=directory owner=root group=root mode=0755
+
+- include: common_tasks/docker-container.yml
+  vars:
+    task_name: Terraria server container
+    name:  terraria
+    image: docker.io/ryshe/terraria:latest
+    expose:
+      - "7777"
+    published_ports:
+      - "7777:7777"
+    volumes:
+      - "{{ container_data_directory }}/terraria/main:/world:rw"
