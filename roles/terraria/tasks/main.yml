@@ -1,4 +1,4 @@
-- include: common_tasks/docker-image.yml
+- include: roles/docker/tasks/image.yml
   vars:
     task_name: Terraria server container image
     name: ryshe/terraria
@@ -13,7 +13,7 @@
 
 - file: path={{ container_data_directory }}/terraria/main state=directory owner=root group=root mode=0755
 
-- include: common_tasks/docker-container.yml
+- include: roles/docker/tasks/container.yml
   vars:
     task_name: Terraria server container {{ item.world_name }}
     name:  terraria-{{ item.world_name }}

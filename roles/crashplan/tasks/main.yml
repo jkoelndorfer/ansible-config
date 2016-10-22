@@ -1,4 +1,4 @@
-- include: common_tasks/docker-image-from-git.yml
+- include: roles/docker/tasks/image-from-git.yml
   vars:
     task_name: Crashplan image
     name: docker-crashplan
@@ -12,7 +12,7 @@
     group: root
     mode: '0700'
 
-- include: common_tasks/docker-container.yml
+- include: roles/docker/tasks/container.yml
   vars:
     task_name: Crashplan container
     name: crashplan
