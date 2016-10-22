@@ -6,22 +6,22 @@ suramar.segv.us
 legion.segv.us
 suramar.segv.us
 
-[crashplan-container-host]
+[crashplan]
 legion.segv.us
 suramar.segv.us
 
 [development]
 suramar.segv.us
 
-[le-gen-container-host]
+[le-gen]
 legion.segv.us
 suramar.segv.us
 
-[mumble-container-host]
+[mumble]
 legion.segv.us
 suramar.segv.us
 
-[owncloud-container-host]
+[owncloud]
 legion.segv.us
 suramar.segv.us
 
@@ -29,10 +29,10 @@ suramar.segv.us
 legion.segv.us
 suramar.segv.us
 
-[ssh-container-host]
+[ssh]
 legion.segv.us
 suramar.segv.us
 
-[terraria-container-host]
+[terraria]
 legion.segv.us
 suramar.segv.us
