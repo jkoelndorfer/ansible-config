@@ -5,7 +5,7 @@
     git_repo: https://github.com/jkoelndorfer/docker-crashplan
     tag: latest
 
-- include: common_tasks/container-data.yml
+- include: roles/docker/tasks/data.yml
   vars:
     container_name: crashplan
     owner: root

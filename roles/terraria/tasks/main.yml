@@ -4,7 +4,7 @@
     name: ryshe/terraria
     tag: latest
 
-- include: common_tasks/container-data.yml
+- include: roles/docker/tasks/data.yml
   vars:
     container_name: terraria
     owner: root
