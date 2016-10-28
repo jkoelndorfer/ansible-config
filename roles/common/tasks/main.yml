@@ -25,7 +25,4 @@
   template: src=sudo-nopasswd.j2 dest=/etc/sudoers.d/sudo-nopasswd owner=root group=root mode=0400
             validate='visudo -cf %s'
 
-- include: arch-base.yml
-  when: ansible_os_family == "Archlinux"
-
 - include: local.yml
