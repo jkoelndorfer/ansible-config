@@ -2,6 +2,9 @@
 legion.segv.us
 suramar.segv.us
 
+[development]
+suramar.segv.us
+
 [docker]
 legion.segv.us
 suramar.segv.us
@@ -27,7 +30,6 @@ suramar.segv.us
 
 [production]
 legion.segv.us
-suramar.segv.us
 
 [ssh]
 legion.segv.us
