@@ -1,6 +1,6 @@
 owncloud_pg_username: owncloud
 owncloud_pg_version: 9.5.4
-owncloud_version: 8.0.15
+owncloud_version: 9.1.1
 
 # UIDs from the service accounts in the containers
 owncloud_app_owner: '33'

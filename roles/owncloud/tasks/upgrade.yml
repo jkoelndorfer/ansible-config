@@ -1,0 +1,12 @@
+- include_vars: roles/owncloud/vars/main.yml
+  run_once: true
+
+- include: app.yml
+
+# TODO: The occ executable doesn't show up until some time after owncloud has actually started. We should
+# use something a little more robust than a sleep to wait for it to show up.
+- name: run owncloud upgrade to {{ owncloud_version }}
+  command: docker exec owncloud-app su - www-data -s /bin/bash -l -c 'sleep 2; cd /var/www/html; ./occ upgrade'
+  register: owncloud_upgrade_result
+  failed_when: owncloud_upgrade_result.rc != 0 and 'ownCloud is already latest version' not in owncloud_upgrade_result.stdout
+  changed_when: "'ownCloud is already latest version' not in owncloud_upgrade_result.stdout"

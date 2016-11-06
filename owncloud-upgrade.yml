@@ -1,0 +1,15 @@
+- name: update ownCloud
+  hosts: owncloud
+  become: true
+  become_user: root
+  vars_prompt:
+    - name: owncloud_upgrade_path
+      prompt: Enter a comma-separated list of version numbers to sequentially update ownCloud
+      private: false
+  tasks:
+    - include: roles/owncloud/tasks/upgrade.yml
+      vars:
+        owncloud_version: "{{ item }}"
+        state: started
+        container_play_action: rebuild
+      with_items: "{{ owncloud_upgrade_path.split(',') }}"

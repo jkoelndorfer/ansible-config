@@ -19,21 +19,7 @@
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
 
-- include: roles/docker/tasks/image.yml
-  vars:
-    task_name: Owncloud application image
-    name: docker.io/owncloud
-    tag: "{{ owncloud_version }}"
-
-- include: roles/docker/tasks/container.yml
-  vars:
-    task_name: Owncloud application container
-    name:  owncloud-app
-    image: "owncloud:{{ owncloud_version }}"
-    volumes:
-      - "{{ container_data_directory }}/owncloud/app:/var/www/html"
-    links:
-      - owncloud-db:db
+- include: app.yml
 
 - include: roles/docker/tasks/image-from-git.yml
   vars:
