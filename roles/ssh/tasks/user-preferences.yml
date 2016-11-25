@@ -1,7 +1,7 @@
 - file: path={{ container_data_directory }}/ssh/home/{{ primary_user_username}} state=directory \
         owner={{ primary_user_username }} mode=0700
 
-- include: common_tasks/configure-homedir.yml
+- include: roles/common/tasks/configure-homedir.yml
   vars:
     username: "{{ primary_user_username }}"
     directory: "{{ container_data_directory }}/ssh/home/{{ primary_user_username}}"
