@@ -1,0 +1,27 @@
+- hosts: arch
+  gather_facts: false
+  tasks:
+    - name: detect ssh port
+      include: common_tasks/detect-ssh-port.yml
+
+- hosts: arch
+  tasks:
+    - name: snapshot root
+      include: roles/btrfs/tasks/snapshot-root.yml
+
+    - name: clear pacman cache
+      command: pacman -Sc --noconfirm
+      become: true
+      become_user: root
+
+    - name: perform system update
+      command: pacman -Syu --noconfirm
+      become: true
+      become_user: root
+
+    - name: reboot system
+      shell: sleep 3; systemctl reboot
+      async: false
+      poll: false
+      become: true
+      become_user: root

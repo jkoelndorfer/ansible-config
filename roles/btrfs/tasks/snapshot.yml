@@ -1,0 +1,9 @@
+- name: "create snapshot parent directory: {{ snapshot_dest | dirname }}"
+  file: state=directory path={{ snapshot_dest | dirname }} owner=root group=root mode=0755
+  become: true
+  become_user: root
+
+- name: "take btrfs snapshot: {{ snapshot_src }} -> {{ snapshot_dest }}"
+  command: btrfs subvolume snapshot {% if (snapshot_readonly | default(false)) %}-r{% endif %} "{{ snapshot_src }}" "{{ snapshot_dest }}"
+  become: true
+  become_user: root
