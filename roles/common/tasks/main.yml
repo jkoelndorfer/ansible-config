@@ -3,7 +3,7 @@
 - include: ssh.yml
 
 - name: primary data subvolume
-  include: common_tasks/subvolume.yml
+  include: roles/btrfs/tasks/subvolume.yml
   vars:
     name: primary data
     path: /srv/data
