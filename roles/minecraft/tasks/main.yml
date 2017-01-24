@@ -1,0 +1,30 @@
+- include: roles/docker/tasks/image-from-git.yml
+  vars:
+    task_name: Minecraft container image -- {{ item.name }}
+    name: minecraft-ftb
+    tag: "{{ item.short_name }}-{{ item.version }}"
+    git_repo: https://github.com/jkoelndorfer/docker-ftb
+    buildargs:
+      MODPACK_SERVER_ZIP_URL: "{{ item.server_zip_url }}"
+  with_items: "{{ minecraft_servers }}"
+
+- include: roles/docker/tasks/data.yml
+  vars:
+    container_name: minecraft-ftb-{{ item.short_name }}
+    owner: root
+    group: root
+    mode: '0755'
+  with_items: "{{ minecraft_servers }}"
+
+- include: roles/docker/tasks/container.yml
+  vars:
+    task_name: Minecraft server container -- {{ item.name }}
+    name:  minecraft-ftb-{{ item.short_name }}
+    image: "minecraft-ftb:{{ item.short_name }}-{{ item.version }}"
+    published_ports:
+      - "{{ item.port }}:25565"
+    volumes:
+      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/backups:/minecraft/backups"
+      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/serverconf:/minecraft/serverconf"
+      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/world:/minecraft/world"
+  with_items: "{{ minecraft_servers }}"

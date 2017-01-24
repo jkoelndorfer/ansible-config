@@ -39,3 +39,10 @@
   become_user: root
   roles:
     - { role: terraria, tags: ['terraria'] }
+
+- name: "{{ container_play_action }} Minecraft container"
+  hosts: minecraft
+  become: true
+  become_user: root
+  roles:
+    - { role: minecraft, tags: ['minecraft'] }
