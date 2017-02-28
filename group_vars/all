@@ -20,3 +20,5 @@ primary_user_uid: 500
 ssh_port: 225
 
 timezone: America/Chicago
+
+virtualenv_dir_ansible: /var/local/ansible-venv

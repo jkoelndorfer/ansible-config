@@ -1,0 +1,21 @@
+---
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install python virtualenv
+  package: name={{ python_virtualenv_pkg }} state=present
+
+- name: create virtualenv for ansible
+  command: virtualenv -p python2 {{ virtualenv_dir_ansible }}
+  args:
+    creates: "{{ virtualenv_dir_ansible }}"
+
+- name: copy ansible requirements.txt
+  copy: src=files/requirements.txt dest={{ virtualenv_dir_ansible }}/requirements.txt \
+        owner=root group=root mode=0444
+
+- name: install packages in ansible virtualenv
+  command: "{{ virtualenv_dir_ansible }}/bin/pip install -r {{ virtualenv_dir_ansible }}/requirements.txt"
+
+- name: set ansible python interpreter
+  set_fact: ansible_python_interpreter={{ virtualenv_dir_ansible }}/bin/python2
