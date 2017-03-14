@@ -6,11 +6,11 @@ networking_configuration:
    dns: "10.0.0.1"
 
 minecraft_servers:
-  - name: Direwolf20 1.10
+  - name: FTB Beyond 1.10
     port: 25565
-    short_name: direwolf20-1.10
-    version: 1.3.2
-    server_zip_url: http://ftb.cursecdn.com/FTB2/modpacks/FTBPresentsDirewolf20110/1_3_2/FTBPresentsDirewolf20110Server.zip
+    short_name: beyond-1.10
+    version: 1.0.1
+    server_zip_url: http://ftb.cursecdn.com/FTB2/modpacks/FTBBeyond/1_0_1/FTBBeyondServer.zip
 
 terraria_worlds:
   - world_name: main
