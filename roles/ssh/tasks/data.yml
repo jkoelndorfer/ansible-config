@@ -1,4 +1,4 @@
-- include: common_tasks/container-data.yml
+- include: roles/docker/tasks/data.yml
   vars:
     container_name: ssh
     owner: root

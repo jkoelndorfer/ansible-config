@@ -1,0 +1,16 @@
+- include: roles/docker/tasks/image.yml
+  vars:
+    task_name: Owncloud application image
+    name: docker.io/owncloud
+    tag: "{{ owncloud_version }}"
+
+- include: roles/docker/tasks/container.yml
+  vars:
+    task_name: Owncloud application container
+    name:  owncloud-app
+    image: "owncloud:{{ owncloud_version }}"
+    volumes:
+      - "{{ container_data_directory }}/owncloud/app/config:/var/www/html/config"
+      - "{{ container_data_directory }}/owncloud/app/data:/var/www/html/data"
+    links:
+      - owncloud-db:db

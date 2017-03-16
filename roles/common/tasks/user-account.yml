@@ -10,12 +10,6 @@
   user: name={{ primary_user_username }} shell={{ preferred_shell }} group=users groups={{ sudo_group }} \
         uid={{ primary_user_uid }} password={{ primary_user_password }}
 
-- name: Configure primary user authorized keys
-  authorized_key: user={{ primary_user_username }} key={{ item }}
-  with_items: "{{ primary_user_authorized_keys }}"
-  become: true
-  become_user: "{{ primary_user_username }}"
-
 - name: Install zsh
   package: name={{ zsh_package }} state=installed
 

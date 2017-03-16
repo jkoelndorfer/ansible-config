@@ -5,4 +5,19 @@ networking_configuration:
    gateway: "10.0.0.1"
    dns: "10.0.0.1"
 
+minecraft_servers:
+  - name: FTB Beyond 1.10
+    port: 25565
+    short_name: beyond-1.10
+    version: 1.0.1
+    server_zip_url: http://ftb.cursecdn.com/FTB2/modpacks/FTBBeyond/1_0_1/FTBBeyondServer.zip
+
+terraria_worlds:
+  - world_name: main
+    world_size: medium
+    port: "7777"
+  - world_name: exploratory
+    world_size: large
+    port: "7778"
+
 # vim: ft=yaml

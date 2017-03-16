@@ -1,34 +1,55 @@
 - name: "{{ container_play_action }} mumble container"
-  hosts: mumble-container-host
+  hosts: mumble
   become: true
   become_user: root
   roles:
+    - { role: base, tags: ['mumble'] }
     - { role: mumble, tags: ['mumble'] }
 
 - name: "{{ container_play_action }} owncloud containers"
-  hosts: owncloud-container-host
+  hosts: owncloud
   become: true
   become_user: root
   roles:
+    - { role: base, tags: ['owncloud'] }
     - { role: owncloud, tags: ['owncloud'] }
 
 - name: "{{ container_play_action }} ssh container"
-  hosts: ssh-container-host
+  hosts: ssh
   become: true
   become_user: root
   roles:
+    - { role: base, tags: ['ssh'] }
     - { role: ssh, tags: ['ssh'] }
 
 - name: "{{ container_play_action }} le-gen container"
-  hosts: le-gen-container-host
+  hosts: le-gen
   become: true
   become_user: root
   roles:
+    - { role: base, tags: ['le-gen'] }
     - { role: le-gen, tags: ['le-gen'] }
 
 - name: "{{ container_play_action }} Crashplan container"
-  hosts: crashplan-container-host
+  hosts: crashplan
   become: true
   become_user: root
   roles:
+    - { role: base, tags: ['crashplan'] }
     - { role: crashplan, tags: ['crashplan'] }
+
+- name: "{{ container_play_action }} Terraria container"
+  hosts: terraria
+  become: true
+  become_user: root
+  roles:
+    - { role: base, tags: ['terraria'] }
+    - { role: terraria, tags: ['terraria'] }
+
+- name: "{{ container_play_action }} Minecraft container"
+  hosts: minecraft
+  become: true
+  become_user: root
+  roles:
+    - { role: base, tags: ['minecraft'] }
+    - { role: minecraft, tags: ['minecraft'] }

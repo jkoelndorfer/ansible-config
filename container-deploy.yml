@@ -1,10 +1,17 @@
-- name: "deploy container hosts"
-  hosts: container-host
+- name: "configure arch base"
+  hosts: docker&:arch
+  become: true
+  become_user: root
+  roles:
+    - { role: arch, tags: ['arch'] }
+
+- name: "deploy docker hosts"
+  hosts: docker
   become: true
   become_user: root
   roles:
     - { role: common, tags: ['common'] }
-    - { role: container-host, tags: ['container-host'] }
+    - { role: docker, tags: ['docker'] }
 
 - include: container-base.yml
   vars:

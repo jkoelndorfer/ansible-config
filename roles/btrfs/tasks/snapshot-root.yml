@@ -1,0 +1,45 @@
+- name: determine btrfs root subvolume
+  shell: btrfs subvolume list / | head -n 1 | awk '{ print $NF }'
+  register: btrfs_root_subvolume_cmd
+  become: true
+  become_user: root
+
+- name: determine btrfs device
+  shell: mount | grep 'on / type btrfs' | head -n 1 | awk '{ print $1 }'
+  register: btrfs_root_device_cmd
+  become: true
+  become_user: root
+
+- name: create temporary directory
+  command: mktemp --tmpdir -d 'btrfs-root-snapshot.XXXXXX'
+  register: btrfs_root_snapshot_tmpdir
+  become: true
+  become_user: root
+
+- name: set root snapshot variables
+  set_fact:
+    btrfs_root_device: "{{ btrfs_root_device_cmd.stdout }}"
+    btrfs_root_subvolume: "{{ btrfs_root_subvolume_cmd.stdout }}"
+    btrfs_snapshot_name: "{{ btrfs_root_subvolume_cmd.stdout }}-{{ ansible_date_time.iso8601 }}"
+    snapshot_tmpdir: "{{ btrfs_root_snapshot_tmpdir.stdout }}"
+
+- name: mount root of btrfs volume
+  command: mount {{ btrfs_root_device }} {{ snapshot_tmpdir }}
+  become: true
+  become_user: root
+
+- name: take snapshot
+  include: snapshot.yml
+  vars:
+    snapshot_src: "{{ snapshot_tmpdir }}/{{ btrfs_root_subvolume }}"
+    snapshot_dest: "{{ snapshot_tmpdir }}/{{ btrfs_snapshot_name }}"
+
+- name: unmount root of btrfs volume
+  command: umount {{ snapshot_tmpdir }}
+  become: true
+  become_user: root
+
+- name: remove temporary directory
+  file: name={{ snapshot_tmpdir }} state=absent
+  become: true
+  become_user: root

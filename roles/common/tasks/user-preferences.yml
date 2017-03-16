@@ -13,7 +13,7 @@
 - name: Install git
   package: name={{ git_package }} state=installed
 
-- include: common_tasks/configure-homedir.yml
+- include: roles/common/tasks/configure-homedir.yml
   vars:
     - username: "{{ primary_user_username }}"
     - authorized_keys: "{{ primary_user_authorized_keys }}"

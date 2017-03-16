@@ -1,6 +1,6 @@
 - include_vars: secret_vars/user-account.yml
 
-- include: common_tasks/docker-image-from-git.yml
+- include: roles/docker/tasks/image-from-git.yml
   vars:
     task_name: Fedora ssh image
     name: fedora-shell
@@ -10,12 +10,23 @@
 
 - include: data.yml
 
-- include: common_tasks/docker-container.yml
+- include: roles/docker/tasks/container.yml
   vars:
     task_name: Fedora ssh container
     name:  ssh
     image: fedora-shell
-    published_ports: "{{ ssh_container_port }}:22"
+    published_ports:
+      - "{{ ssh_container_port }}:22"
+      - "60000:60000/udp"
+      - "60001:60001/udp"
+      - "60002:60002/udp"
+      - "60003:60003/udp"
+      - "60004:60004/udp"
+      - "60005:60005/udp"
+      - "60006:60006/udp"
+      - "60007:60007/udp"
+      - "60008:60008/udp"
+      - "60009:60009/udp"
     hostname: sh.segv.us
     volumes:
       - "{{ container_data_directory }}/ssh/home:/home:rw"

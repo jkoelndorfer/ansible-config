@@ -6,3 +6,4 @@
     force: "{{ container_image_force | default(false) }}"
     nocache: "{{ container_nocache | default(false) }}}"
     state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
+    buildargs: "{{ buildargs  | default({}) }}"

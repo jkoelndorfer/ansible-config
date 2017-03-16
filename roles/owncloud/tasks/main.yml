@@ -2,13 +2,13 @@
 
 - include: data.yml
 
-- include: common_tasks/docker-image.yml
+- include: roles/docker/tasks/image.yml
   vars:
     task_name: Owncloud Postgres image
     name: docker.io/postgres
     tag: "{{ owncloud_pg_version }}"
 
-- include: common_tasks/docker-container.yml
+- include: roles/docker/tasks/container.yml
   vars:
     task_name: Owncloud Postgres container
     name:  owncloud-db
@@ -19,23 +19,9 @@
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
 
-- include: common_tasks/docker-image.yml
-  vars:
-    task_name: Owncloud application image
-    name: docker.io/owncloud
-    tag: "{{ owncloud_version }}"
+- include: app.yml
 
-- include: common_tasks/docker-container.yml
-  vars:
-    task_name: Owncloud application container
-    name:  owncloud-app
-    image: "owncloud:{{ owncloud_version }}"
-    volumes:
-      - "{{ container_data_directory }}/owncloud/app:/var/www/html"
-    links:
-      - owncloud-db:db
-
-- include: common_tasks/docker-image-from-git.yml
+- include: roles/docker/tasks/image-from-git.yml
   vars:
     task_name: Owncloud SSL proxy image
     name: nginx-ssl-proxy
@@ -49,7 +35,7 @@
   command: openssl dhparam -out {{ container_config_directory }}/ssl-proxy/dhparam 2048 \
            creates={{ container_config_directory }}/ssl-proxy/dhparam
 
-- include: common_tasks/docker-container.yml
+- include: roles/docker/tasks/container.yml
   vars:
     task_name: nginx SSL proxy container
     name: nginx-ssl-proxy

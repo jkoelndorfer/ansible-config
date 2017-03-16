@@ -8,7 +8,7 @@
         - always
 
     - name: detect ssh port
-      include: common_tasks/detect-ssh-port.yml
+      include: roles/common/tasks/detect-ssh-port.yml
       tags:
         - always
 

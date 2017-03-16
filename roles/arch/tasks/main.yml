@@ -6,7 +6,7 @@
     - python
 
 - name: install cower
-  include: common_tasks/aur-pkg.yml pkg_name=cower
+  include: aur-pkg.yml pkg_name=cower
 
 - name: install pacaur
-  include: common_tasks/aur-pkg.yml pkg_name=pacaur
+  include: aur-pkg.yml pkg_name=pacaur
