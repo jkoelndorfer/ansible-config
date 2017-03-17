@@ -1,0 +1,61 @@
+---
+
+# Determines how to connect to the router. If all else fails,
+# try specifying ansible_host on the command line.
+
+- name: include router secret variables
+  include_vars: secret_vars/router.yml
+
+- name: include role variables
+  include_vars: roles/router/vars/main.yml
+
+- name: check router connectivity by hostname
+  connection: local
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: 22
+    state: started
+    connect_timeout: 1
+    timeout: 1
+  register: router_hostname_check
+  ignore_errors: True
+
+- name: check that router link interface is defined
+  connection: local
+  fail: msg="You must specify router_interface as the interface the router is reachable on"
+  when: router_interface is undefined and router_hostname_check | failed
+
+- name: configure local interface with default IP address
+  connection: local
+  shell: ip address add {{ router_connect_client_address }} dev {{ router_interface }}
+  become: True
+  become_user: root
+  when: router_hostname_check | failed
+  ignore_errors: True
+  register: router_connect_ip_configuration
+
+- name: check result of IP configuration
+  connection: local
+  fail: msg="Could not configure {{ router_connect_client_address }} on {{ router_interface }}"
+  when: "(router_connect_ip_configuration | failed) and ('File exists' not in router_connect_ip_configuration.stderr)"
+
+- name: check router connectivity by default IP address
+  connection: local
+  wait_for:
+    host: "{{ router_default_ip }}"
+    port: 22
+    state: started
+    connect_timeout: 2
+    timeout: 2
+  when: router_hostname_check | failed
+
+- name: update ansible_host for router
+  set_fact:
+    ansible_host: "{{ router_default_ip }}"
+  when: router_hostname_check | failed
+
+- name: set router WAN MAC address for internet connectivity
+  raw: uci set network.wan.macaddr={{ router_wan_mac_address }}; \
+       uci set network.wan6.macaddr={{ router_wan_mac_address }}; \
+       uci commit network; \
+       /etc/init.d/network restart

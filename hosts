@@ -34,6 +34,7 @@ suramar.segv.us
 
 [production]
 legion.segv.us
+router0.lan
 
 [ssh]
 legion.segv.us
