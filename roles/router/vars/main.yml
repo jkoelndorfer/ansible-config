@@ -2,4 +2,6 @@
 
 router_flash: False
 router_packages:
+  - bind-dig
   - ip
+  - unbound

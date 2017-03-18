@@ -28,4 +28,62 @@ router_alternate_addresses:
   - router: 10.0.0.1
     client: 10.0.0.2/16
 
+router_firewall:
+  redirect:
+    - name: cert_generation
+      src: wan
+      proto: tcp
+      src_dport: 80
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: minecraft
+      src: wan
+      proto: tcp
+      src_dport: 25565
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: mosh
+      src: wan
+      proto: udp
+      src_dport: 60000:61000
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: mumble
+      src: wan
+      proto: tcpudp
+      src_dport: 64738
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: owncloud
+      src: wan
+      proto: tcp
+      src_dport: 443
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: server
+      src: wan
+      proto: tcp
+      src_dport: 225
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
+    - name: shell_server
+      src: wan
+      proto: tcp
+      src_dport: 2225
+      dest: lan
+      dest_ip: 10.0.2.1
+      target: DNAT
+
 # vim: ft=yaml

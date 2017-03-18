@@ -1,0 +1,13 @@
+---
+
+- name: configure firewall {{ rule_type }} -- {{ rule.name }}
+  raw: uci set "firewall.{{ rule.name }}={{ rule_type }}"
+
+- name: configure firewall {{ rule_type }} options -- {{ rule.name }}
+  raw: uci set "firewall.{{ rule.name }}.{{ item.key }}={{ item.value }}"
+  with_dict: "{{ rule }}"
+
+# We reorder our firewall rules here so that they take effect in the order
+# they are defined.
+- name: reorder firewall {{ rule_type }} -- {{ rule.name }}
+  raw: uci reorder "firewall.{{ rule.name }}"=99999

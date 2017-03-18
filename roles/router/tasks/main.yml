@@ -11,8 +11,11 @@
   include: connectivity.yml
   when: router_flash
 
+- name: install router packages
+  include: pkgs.yml
+
 - name: apply router configuration
   include: config.yml
 
-- name: install router packages
-  include: pkgs.yml
+- name: configure firewall rules
+  include: firewall.yml
