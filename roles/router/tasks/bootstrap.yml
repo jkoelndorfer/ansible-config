@@ -1,7 +1,0 @@
----
-
-- name: establish router connectivity
-  include: connectivity.yml
-
-- name: install python
-  raw: opkg update; opkg install python
