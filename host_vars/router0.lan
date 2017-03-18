@@ -1,4 +1,24 @@
 ---
 ansible_user: root
 
+uci_config:
+  network.lan.ipaddr: 10.0.0.1
+  network.lan.netmask: 255.255.0.0
+  network.wan6.reqprefix: 60
+
+  wireless.radio0.channel: 9
+  wireless.radio0.country: US
+  wireless.radio0.distance: 10m
+  wireless.radio0.require_mode: n
+  wireless.radio0.disabled: 0
+
+  wireless.radio1.channel: 44
+  wireless.radio1.htmode: HT40+
+  wireless.radio1.country: US
+  wireless.radio1.distance: 10m
+  wireless.radio1.disabled: 0
+
+  wireless.default_radio0.encryption: psk2+aes
+  wireless.default_radio1.encryption: psk2+aes
+
 # vim: ft=yaml

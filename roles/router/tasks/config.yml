@@ -1,0 +1,27 @@
+---
+
+- name: include router private variables
+  include_vars: secret_vars/router.yml
+
+- name: apply UCI configuration -- WAN MAC address
+  raw: uci set {{ item }}={{ router_wan_mac_address }}
+  with_items:
+    - network.wan.macaddr
+    - network.wan6.macaddr
+
+- name: apply UCI configuration
+  raw: uci set '{{ item.key }}={{ item.value }}'
+  with_dict: "{{ uci_config }}"
+
+- name: apply UCI configuration secrets
+  raw: uci set '{{ item.key }}={{ item.value }}'
+  with_dict: "{{ uci_config_secrets }}"
+
+- name: commit UCI configuration
+  raw: uci commit
+
+- name: restart network
+  raw: /etc/init.d/network restart
+
+- name: restart wifi
+  raw: wifi

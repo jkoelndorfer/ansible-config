@@ -1,0 +1,7 @@
+---
+
+- name: configure router
+  hosts: router0.lan
+  gather_facts: False
+  tasks:
+    - include: roles/router/tasks/config.yml

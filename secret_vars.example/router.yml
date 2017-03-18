@@ -1,2 +1,9 @@
 ---
 router_wan_mac_address: XX:XX:XX:XX:XX:XX
+
+uci_config_secrets:
+  wireless.default_radio0.ssid: SSID
+  wireless.default_radio0.key: PASSWORD
+
+  wireless.default_radio1.ssid: SSID
+  wireless.default_radio1.key: PASSWORD
