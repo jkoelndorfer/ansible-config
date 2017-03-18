@@ -1,7 +1,5 @@
 ---
 
-- include: bootstrap.yml
-
 - name: get temporary path for image download
   connection: local
   shell: mktemp --tmpdir router-image.XXXXXX

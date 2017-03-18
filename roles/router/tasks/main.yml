@@ -1,6 +1,18 @@
 ---
 
-gather_facts: False
+- name: establish router connectivity
+  include: connectivity.yml
 
 - name: flash router
   include: flash.yml
+  when: router_flash
+
+- name: reestablish connectivity after flashing
+  include: connectivity.yml
+  when: router_flash
+
+- name: apply router configuration
+  include: config.yml
+
+- name: install router packages
+  include: pkgs.yml

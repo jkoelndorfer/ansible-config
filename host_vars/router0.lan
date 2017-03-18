@@ -21,4 +21,11 @@ uci_config:
   wireless.default_radio0.encryption: psk2+aes
   wireless.default_radio1.encryption: psk2+aes
 
+router_alternate_addresses:
+  - router: 192.168.1.1
+    client: 192.168.1.2/24
+
+  - router: 10.0.0.1
+    client: 10.0.0.2/16
+
 # vim: ft=yaml

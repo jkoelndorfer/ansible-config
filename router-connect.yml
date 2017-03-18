@@ -1,7 +1,0 @@
----
-
-- name: establish router connectivity
-  hosts: router0.lan
-  gather_facts: False
-  tasks:
-    - include: roles/router/tasks/connectivity.yml
