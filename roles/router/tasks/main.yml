@@ -16,6 +16,3 @@
 
 - name: apply router configuration
   include: config.yml
-
-- name: configure firewall rules
-  include: firewall.yml

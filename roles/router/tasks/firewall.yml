@@ -16,8 +16,5 @@
   loop_control:
     loop_var: rule
 
-- name: commit firewall rules
-  raw: uci commit firewall
-
 - name: reload firewall rules
   raw: /etc/init.d/firewall restart
