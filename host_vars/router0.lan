@@ -2,6 +2,9 @@
 ansible_user: root
 
 uci_config:
+  # Disable DHCPv4
+  dhcp.lan.ignore: 1
+
   network.globals.ula_prefix: fd3d:8dc5:dacb::/48
   network.lan.ipaddr: 10.0.0.1
   network.lan.netmask: 255.255.0.0
