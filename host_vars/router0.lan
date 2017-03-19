@@ -2,8 +2,14 @@
 ansible_user: root
 
 uci_config:
-  # Disable DHCPv4
-  dhcp.lan.ignore: 1
+  # Enable DHCPv4. Some software, like Java, does not behave correctly on
+  # IPv6-only networks. For example, on an IPv6-only system, Minecraft
+  # will request both A and AAAA records and, if the A record returns
+  # a result, it will try to contact a remote host via unusable IPv4...
+  # even if the AAAA record has an IPv6 address.
+  #
+  # Software is great.
+  dhcp.lan.ignore: 0
 
   network.globals.ula_prefix: fd3d:8dc5:dacb::/48
   network.lan.ipaddr: 10.0.0.1
