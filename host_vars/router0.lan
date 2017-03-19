@@ -2,12 +2,15 @@
 ansible_user: root
 
 uci_config:
+  network.globals.ula_prefix: fd3d:8dc5:dacb::/48
   network.lan.ipaddr: 10.0.0.1
   network.lan.netmask: 255.255.0.0
   network.wan6.reqprefix: 60
 
   system.@system[0].hostname: router0
   system.@system[0].timezone: America/Chicago
+
+  unbound.@unbound[0].dns64: 1
 
   wireless.radio0.channel: 9
   wireless.radio0.country: US
