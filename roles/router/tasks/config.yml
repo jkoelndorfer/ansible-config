@@ -13,15 +13,21 @@
   tags:
     - config
 
-- name: apply UCI configuration
-  raw: uci set '{{ item.key }}={{ item.value }}'
-  with_dict: "{{ uci_config }}"
+- name: create nat64 interface
+  raw: uci set "network.nat64=interface"
   tags:
     - config
 
-- name: apply UCI configuration secrets
+- name: add nat64 interface to lan zone
+  raw: uci delete   firewall.@zone[0].network; \
+       uci add_list firewall.@zone[0].network=lan; \
+       uci add_list firewall.@zone[0].network=nat64
+  tags:
+    - config
+
+- name: apply UCI configuration
   raw: uci set '{{ item.key }}={{ item.value }}'
-  with_dict: "{{ uci_config_secrets }}"
+  with_dict: "{{ uci_config | combine(uci_config_secrets) }}"
   tags:
     - config
 
@@ -85,3 +91,8 @@
   tags:
     - config
     - unbound
+
+- name: up nat64 interface
+  raw: ifup nat64
+  tags:
+    - config

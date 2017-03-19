@@ -5,4 +5,5 @@ router_packages:
   - bind-dig
   - ip
   - python
+  - tayga
   - unbound

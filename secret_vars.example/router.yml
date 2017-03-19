@@ -2,6 +2,8 @@
 router_wan_mac_address: XX:XX:XX:XX:XX:XX
 
 uci_config_secrets:
+  network.nat64.ipv6_addr: 2001:db8::1
+
   wireless.default_radio0.ssid: SSID
   wireless.default_radio0.key: PASSWORD
 

@@ -13,6 +13,8 @@
 
 - name: install router packages
   include: pkgs.yml
+  tags:
+    - pkgs
 
 - name: apply router configuration
   include: config.yml
