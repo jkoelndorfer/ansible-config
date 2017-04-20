@@ -69,7 +69,7 @@
     shell: echo "root:{{ ansible_password }}" | chpasswd -R {{ arch_install_root }}
 
   - name: configure networking
-    template: src=common_templates/systemd-networkd.network.j2 \
+    template: src=roles/arch/templates/systemd-networkd.network.j2 \
               dest={{ arch_install_root }}/etc/systemd/network/{{ item.name }}.network \
               owner=root group=root mode=0444
     vars:

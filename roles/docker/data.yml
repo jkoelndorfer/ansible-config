@@ -1,4 +1,0 @@
-- include: roles/btrfs/tasks/subvolume.yml
-  vars:
-    name: "{{ container_name }}"
-    path: "{{ container_data_directory }}/{{ container_name }}"
