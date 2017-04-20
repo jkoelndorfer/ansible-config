@@ -1,4 +1,2 @@
 docker_package: docker-latest
 docker_service: docker-latest
-
-docker_py_package: python-docker-py

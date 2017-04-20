@@ -6,8 +6,4 @@
 - name: install Docker package
   package: name={{ docker_package }} state=installed
 
-# docker-py is needed in order for ansible to manage Docker images
-- name: install docker-py package
-  package: name={{ docker_py_package }} state=installed
-
 - service: name={{ docker_service }} state=started enabled=true
