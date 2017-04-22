@@ -27,6 +27,9 @@
   - name: start systemd-resolved
     service: state=started name=systemd-resolved
 
+  - name: install updated arch package signing keys
+    shell: pacman -Sy && pacman --noconfirm -S archlinux-keyring
+
   - name: configure mirrorlist
     copy: dest=/etc/pacman.d/mirrorlist \
           content="{{ preferred_arch_mirrors | map('regex_replace', '^(.*)$', 'Server = \\1') | join('\n') }}\n"
