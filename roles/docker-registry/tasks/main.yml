@@ -1,3 +1,24 @@
-- name: pull Docker registry container
-  docker_image: name=docker.io/registry
-  when: restart != true
+---
+
+- name: configure docker registry data volume
+  include: roles/docker/tasks/data.yml
+  vars:
+    container_name: docker-registry
+    owner: root
+    group: root
+    mode: 0755
+
+- name: configure docker registry container
+  include: roles/docker/tasks/container.yml
+  vars:
+    task_name: Docker registry container
+    name: docker-registry
+    image: registry:2
+    published_ports:
+      - "5000:5000"
+    volumes:
+      - "{{ container_data_directory }}/certs/docker_registry:/certs:ro"
+      - "{{ container_data_directory }}/docker-registry:/var/lib/registry:rw"
+    env:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/fullchain.pem
+      REGISTRY_HTTP_TLS_KEY: /certs/key.pem
