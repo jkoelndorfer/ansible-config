@@ -1,9 +1,13 @@
-- name: "{{ task_name }} ({{ {'started': 'present', 'stopped': 'present'}.get(state, state) }})"
+- name: "{{ task_name }}"
+  delegate_to: localhost
+  become: True
   docker_image:
     name: "{{ name }}"
     tag: "{{ tag }}"
     path: "{{ path | default(None) }}"
     force: "{{ container_image_force | default(false) }}"
     nocache: "{{ container_nocache | default(false) }}}"
+    push: True
+    repository: "{{ docker_registry }}"
     state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
     buildargs: "{{ buildargs  | default({}) }}"

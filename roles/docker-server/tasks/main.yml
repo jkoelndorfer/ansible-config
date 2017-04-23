@@ -1,0 +1,11 @@
+---
+
+- name: docker server configj
+  include: config.yml
+
+- name: docker server data
+  include: data.yml
+
+- name: start Docker service
+  service: name={{ docker_service }} state=started enabled=True
+  become: True

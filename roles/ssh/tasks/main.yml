@@ -1,6 +1,6 @@
 - include_vars: secret_vars/user-account.yml
 
-- include: roles/docker/tasks/image-from-git.yml
+- include: roles/docker-server/tasks/image-from-git.yml
   vars:
     task_name: Fedora ssh image
     name: fedora-shell
@@ -10,7 +10,7 @@
 
 - include: data.yml
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Fedora ssh container
     name:  ssh

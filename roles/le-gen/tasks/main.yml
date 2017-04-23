@@ -1,4 +1,4 @@
-- include: roles/docker/tasks/image-from-git.yml
+- include: roles/docker-server/tasks/image-from-git.yml
   vars:
     task_name: le-gen container image
     name: le-gen
@@ -8,11 +8,11 @@
 - include: config.yml
   when: (state == 'present') or (state == 'started')
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: le-gen container
     name:  le-gen
-    image: le-gen:latest
+    registry_image: le-gen:latest
     published_ports:
       - "80:80"
     volumes:

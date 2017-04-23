@@ -1,4 +1,4 @@
-- include: roles/docker/tasks/data.yml
+- include: roles/docker-server/tasks/data.yml
   vars:
     container_name: ssh
     owner: root

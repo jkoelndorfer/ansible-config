@@ -11,7 +11,7 @@
   become_user: root
   roles:
     - { role: common, tags: ['common'] }
-    - { role: docker, tags: ['docker'] }
+    - { role: docker-server, tags: ['docker'] }
 
 - include: container-base.yml
   vars:

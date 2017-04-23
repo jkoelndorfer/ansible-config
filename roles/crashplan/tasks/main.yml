@@ -1,18 +1,18 @@
-- include: roles/docker/tasks/image-from-git.yml
+- include: roles/docker-server/tasks/image-from-git.yml
   vars:
     task_name: Crashplan image
     name: docker-crashplan
     git_repo: https://github.com/jkoelndorfer/docker-crashplan
     tag: latest
 
-- include: roles/docker/tasks/data.yml
+- include: roles/docker-server/tasks/data.yml
   vars:
     container_name: crashplan
     owner: root
     group: root
     mode: '0700'
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Crashplan container
     name: crashplan

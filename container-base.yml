@@ -1,3 +1,17 @@
+- name: configure ansible base (local)
+  hosts: container-servers
+  run_once: True
+  connection: local
+  roles:
+    - { role: base, tags: ['always'] }
+
+- name: configure Docker (local)
+  hosts: container-servers
+  run_once: True
+  connection: local
+  roles:
+    - { role: docker-builder, tags: ['always'], docker_server: False }
+
 - name: configure ansible base
   hosts: container-servers
   become: true
