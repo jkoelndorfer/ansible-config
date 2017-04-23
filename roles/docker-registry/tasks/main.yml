@@ -14,20 +14,24 @@
     mode: 0755
 
 - name: configure docker registry container
-  include: roles/docker-server/tasks/container.yml
+  include_role: docker-container
   vars:
-    task_name: Docker registry container
-    name: docker-registry
+    name: registry
     image: registry:2
     published_ports:
       - 5000:5000
     volumes:
-      - "{{ docker_registry_auth_file }}:/auth:ro"
+      - src: auth
+        dest: /auth
+        mount_mode: ro
+        type: file
+      - src: registry
+        dest: /var/lib/registry
+        mount_mode: rw
       - "{{ container_data_directory }}/certs/docker_registry:/certs:ro"
-      - "{{ container_data_directory }}/docker-registry/registry:/var/lib/registry:rw"
     env:
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth
-      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/fullchain.pem
-      REGISTRY_HTTP_TLS_KEY: /certs/key.pem
+      REGISTRY_HTTP_TLS_CERTIFICATE: "{{ omit if docker_insecure_registry else '/certs/fullchain.pem' }}"
+      REGISTRY_HTTP_TLS_KEY: "{{ omit if docker_insecure_registry else '/certs/key.pem" }}"

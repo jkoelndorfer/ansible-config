@@ -1,5 +1,5 @@
 - name: include OS-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "roles/docker-common/vars/{{ ansible_os_family }}.yml"
 
 - name: install Docker package
   package: name={{ docker_package }} state=installed

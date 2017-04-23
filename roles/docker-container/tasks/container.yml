@@ -1,34 +1,34 @@
 ---
 
-- name: map container volumes
-  set_fact:
-    _mapped_data_volumes: >-
-      [
-        {% for v in (volumes | default([])) %}
-        "{{ container_data_directory }}/{{ v['src'] }}:{{ v['dest'] }}:{{ v['mount_mode'] }}",
-        {% endfor %}
-      ]
-
-- name: create container volumes
+- name: create container data volume
   include_role: name=volume private=True
   vars:
-    path: "{{ container_data_directory }}/{{ item }}"
-    owner: "{{ v['owner'] | default(omit) }}"
-    group: "{{ v['group'] | default(omit) }}"
-    mode: "{{ v['mode'] | default(omit) }}"
-    btrfs_subvolume: "{{ btrfs_volumes }}"
-  with_items: >-
-    [
-      {% for v in (volumes | default([])) %}
-      "{{ container_data_directory }}/{{ v['src'] }}",
-      {% endfor %}
-    ]
-  when: item.type is not defined or item.type == "directory"
+    path: "{{ container_data_directory }}/{{ container_name }}"
+    owner: root
+    group: root
+    mode: 0755
+    btrfs_subvolume: "{{ btrfs_volumes | default(False) }}"
 
-- name: "container {{ name }}"
+- name: create container data directories
+  file:
+    path: "{{ item.src if item.src[0] == '/' else '/'.join([container_data_directory, container_name, item.src]) }}"
+    state: directory
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  become: True
+  register: container_data_directories
+  with_items: "{{ volumes }}"
+  when: "{{ item.type is not defined or item.type == 'directory' }}"
+
+- name: run container-specific configuration tasks
+  include: "{{ config_tasks }}"
+  when: config_tasks is defined
+
+- name: "container {{ container_name }}"
   docker_container:
-    name:  "{{ name }}"
-    image: "{{ repository }}/{{ image_name }}:{{ tag }}"
+    name:  "{{ container_name }}"
+    image: "{{ (repository + '/' + image_name) if repository is defined else image_name }}:{{ tag }}"
     state: "{{ state }}"
     command: "{{ command | default(omit) }}"
     restart: "{{ restart | default(omit) }}"
@@ -37,7 +37,14 @@
     published_ports: "{{ published_ports | default(omit) }}"
     links: "{{ links | default(omit) }}"
     hostname: "{{ hostname | default(omit) }}"
-    volumes: "{{ volumes | default(omit) }}"
+    volumes: >-
+      [
+        {% for v in (volumes | default([])) %}
+        "{{ (v.src if v.src[0] == '/' else '/'.join([container_data_directory, container_name, v.src])) +
+           ":" + v.dest + ":" + (v.mount_mode | default('rw')) }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
     env: "{{ env | default(omit) }}"
     tty: true
     interactive: true
+  become: True

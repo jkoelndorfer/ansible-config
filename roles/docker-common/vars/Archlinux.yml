@@ -1,2 +1,3 @@
 docker_package: docker
 docker_service: docker
+docker_systemd_override: /etc/systemd/system/docker.service.d/override.conf

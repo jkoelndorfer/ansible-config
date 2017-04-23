@@ -1,0 +1,19 @@
+---
+
+- name: create Docker systemd override directory
+  file:
+    path: "{{ docker_systemd_override | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: True
+
+- name: create Docker systemd override
+  template:
+    src: "docker-override.conf.j2"
+    dest: "{{ docker_systemd_override }}"
+    owner: root
+    group: root
+    mode: 0444
+  become: True

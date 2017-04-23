@@ -1,0 +1,4 @@
+---
+
+- name: create docker container -- {{ container_name }}
+  include: container.yml
