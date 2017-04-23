@@ -1,4 +1,4 @@
-ansibletest ansible_python_interpreter=/usr/bin/python2 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_ssh_host=127.0.0.1 ansible_ssh_user=vagrant ansible_ssh_port=50457 ansible_ssh_private_key_file=.vagrant/machines/ansibletest/virtualbox/private_key ssh_port=22
+ansibletest ansible_python_interpreter=/usr/bin/python2 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_ssh_host=127.0.0.1 ansible_ssh_user=vagrant ansible_ssh_port=50457 ansible_ssh_private_key_file=.vagrant/machines/ansibletest/virtualbox/private_key ssh_port=22 docker_registry=127.0.0.1:5000 docker_registry_username=registry docker_registry_password=registry docker_insecure_registry=True
 
 [arch]
 legion.segv.us

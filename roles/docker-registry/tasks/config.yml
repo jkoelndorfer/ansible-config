@@ -1,0 +1,7 @@
+---
+
+- name: configure docker registry credentials
+  shell: >-
+    docker run --rm registry:2 htpasswd -Bbn
+    {{ docker_registry_username }} {{ docker_registry_password }} > {{ this_container_data_directory }}/auth
+  become: True

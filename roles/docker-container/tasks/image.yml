@@ -4,14 +4,45 @@
   set_fact:
     container_state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
 
-- name: "container {{ name }} image"
-  docker_image:
-    name: "{{ image_name }}"
-    tag: "{{ tag }}"
-    path: "{{ build_path | default(omit) }}"
-    force: "{{ force | default(omit) }}"
-    nocache: "{{ nocache | default(omit) }}}"
-    repository: "{{ repository | default(omit) }}"
-    push: "{{ push | default(omit) }}"
-    state: "{{ container_state }}"
-    buildargs: "{{ buildargs | default(omit) }}"
+- name: create container build directory
+  tempfile: state=directory
+  register: container_build_directory_result
+  when: git_repo is defined
+
+- name: set container build directory
+  set_fact:
+    container_build_directory: "{{ container_build_directory_result.path }}"
+  when: git_repo is defined
+
+- block:
+  - name: check out image repository -- {{ container_name }}
+    git:
+      repo: "{{ git_repo }}"
+      dest: "{{ container_build_directory }}"
+      version: "{{ git_version | default('HEAD') }}"
+    delegate_to: localhost
+    when: git_repo is defined
+
+  - name: "container image -- {{ container_name }}"
+    docker_image:
+      name: "{{ image_name }}"
+      tag: "{{ tag }}"
+      path: "{{ (container_build_directory + '/' + (build_subdirectory | default('./'))) if git_repo is defined else None}}"
+      force: "{{ force | default(False) }}"
+      nocache: "{{ nocache | default(False) }}"
+      state: "{{ container_state }}"
+      buildargs: "{{ buildargs | default({}) }}"
+    when: git_repo is defined
+    delegate_to: localhost
+
+  - name: "push container image -- {{ container_name }}"
+    shell: >-
+      docker tag "{{ image_name }}:{{ tag }}" "{{ docker_registry }}/{{ image_name }}:{{ tag }}" &&
+      docker push "{{ docker_registry }}/{{ image_name }}:{{ tag }}"
+    connection: local
+    when: git_repo is defined
+
+  always:
+    - name: clean up container build directory
+      file: path={{ container_build_directory }} state=absent
+      when: container_build_directory is defined

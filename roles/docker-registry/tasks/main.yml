@@ -1,23 +1,20 @@
 ---
 
-- name: configure docker registry credentials
-  shell: >-
-    docker run --rm -it registry:2 htpasswd -Bbn
-    {{ docker_registry_username }} {{ docker_registry_password }} > {{ docker_registry_auth_file }}
-
-- name: configure docker registry data volume
-  include: roles/docker-server/tasks/data.yml
-  vars:
-    container_name: docker-registry
-    owner: root
-    group: root
-    mode: 0755
+# NOTE: There's a "chicken and egg" problem with the registry configuration right now.
+#
+# The secure registry needs a cert that's acquired via le-gen. But le-gen can't be started
+# until the registry is available to pull from.
+#
+# Rather than come up with a workaround for the registry, start it in insecure mode first
+# if needed, then switch to secure mode.
 
 - name: configure docker registry container
-  include_role: docker-container
+  include_role: name=docker-container private=True
   vars:
-    name: registry
-    image: registry:2
+    container_name: registry
+    image_name: registry
+    tag: 2
+    config_tasks: roles/docker-registry/tasks/config.yml
     published_ports:
       - 5000:5000
     volumes:
@@ -28,10 +25,28 @@
       - src: registry
         dest: /var/lib/registry
         mount_mode: rw
-      - "{{ container_data_directory }}/certs/docker_registry:/certs:ro"
+      - src: "{{ container_data_directory }}/le-gen/certs/docker_registry"
+        dest: /certs
+        mount_mode: ro
     env:
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth
-      REGISTRY_HTTP_TLS_CERTIFICATE: "{{ omit if docker_insecure_registry else '/certs/fullchain.pem' }}"
-      REGISTRY_HTTP_TLS_KEY: "{{ omit if docker_insecure_registry else '/certs/key.pem" }}"
+      REGISTRY_HTTP_TLS_CERTIFICATE: "{{ None if docker_insecure_registry else '/certs/fullchain.pem' }}"
+      REGISTRY_HTTP_TLS_KEY: "{{ None if docker_insecure_registry else '/certs/key.pem' }}"
+
+- name: log in to registry (local)
+  docker_login:
+    registry_url: "{{ ('http' if docker_insecure_registry else 'https') + '://' + docker_registry }}"
+    username: "{{ docker_registry_username }}"
+    password: "{{ docker_registry_password }}"
+    state: present
+  become: True
+
+- name: log in to registry
+  docker_login:
+    registry_url: "{{ ('http' if docker_insecure_registry else 'https') + '://' + docker_registry }}"
+    username: "{{ docker_registry_username }}"
+    password: "{{ docker_registry_password }}"
+    state: present
+  connection: local

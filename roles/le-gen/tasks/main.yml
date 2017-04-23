@@ -1,22 +1,23 @@
-- include: roles/docker-server/tasks/image-from-git.yml
+---
+
+- include_role: name=docker-container private=True
   vars:
-    task_name: le-gen container image
-    name: le-gen
+    container_name: le-gen
+    image_name: le-gen
     tag: latest
-    git_repo: https://github.com/jkoelndorfer/le-gen
-
-- include: config.yml
-  when: (state == 'present') or (state == 'started')
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: le-gen container
-    name:  le-gen
-    registry_image: le-gen:latest
+    state: started
+    config_tasks: roles/le-gen/tasks/config.yml
+    git_repo: https://github.com/jkoelndorfer/le-gen.git
     published_ports:
-      - "80:80"
+      - 80:80
     volumes:
-      - "{{ container_config_directory }}/cert_renew.yml:/app/cert_renew.yml:ro"
-      - "{{ container_data_directory }}/certs:/certs:rw"
+      - src: certs
+        dest: /certs
+        mount_mode: rw
+      - src: cert_renew.yml
+        dest: /app/cert_renew.yml
+        mount_mode: ro
+        type: file
     env:
       REDIRECT_URL: "{{ redirect_url }}"
+  static: False

@@ -1,4 +1,6 @@
-- name: "{{ task_name }}"
+---
+
+- name: "{{ container_name }} image -- {{ container_name }}"
   delegate_to: localhost
   become: True
   docker_image:
@@ -10,4 +12,4 @@
     push: True
     repository: "{{ docker_registry }}"
     state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
-    buildargs: "{{ buildargs  | default({}) }}"
+    buildargs: "{{ buildargs  | default(omit) }}"

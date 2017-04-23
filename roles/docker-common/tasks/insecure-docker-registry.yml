@@ -17,3 +17,14 @@
     group: root
     mode: 0444
   become: True
+  register: systemd_override_result
+
+- name: reload systemd units
+  shell: systemctl daemon-reload
+  become: True
+  when: systemd_override_result | changed
+
+- name: restart docker service
+  service: name={{ docker_service }} state=restarted
+  become: True
+  when: systemd_override_result | changed

@@ -10,8 +10,8 @@
 - name: configure insecure Docker registry (local)
   include: insecure-docker-registry.yml
   delegate_to: localhost
-  when: insecure_docker_registry
+  when: docker_insecure_registry
 
 - name: configure insecure Docker registry
   include: insecure-docker-registry.yml
-  when: insecure_docker_registry
+  when: docker_insecure_registry

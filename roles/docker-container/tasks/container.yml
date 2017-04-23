@@ -1,15 +1,16 @@
 ---
 
-- name: create container data volume
+- name: create container data volume -- {{ container_name }}
   include_role: name=volume private=True
   vars:
     path: "{{ container_data_directory }}/{{ container_name }}"
     owner: root
     group: root
     mode: 0755
-    btrfs_subvolume: "{{ btrfs_volumes | default(False) }}"
+    btrfs_subvolume: btrfs_volumes
+  static: True
 
-- name: create container data directories
+- name: create container data directories -- {{ container_name }}
   file:
     path: "{{ item.src if item.src[0] == '/' else '/'.join([container_data_directory, container_name, item.src]) }}"
     state: directory
@@ -19,16 +20,20 @@
   become: True
   register: container_data_directories
   with_items: "{{ volumes }}"
-  when: "{{ item.type is not defined or item.type == 'directory' }}"
+  when: item.type is not defined or item.type == 'directory'
 
-- name: run container-specific configuration tasks
+- name: set this container data directory
+  set_fact:
+    this_container_data_directory: "{{ container_data_directory }}/{{ container_name }}"
+
+- name: run container-specific configuration tasks -- {{ container_name }}
   include: "{{ config_tasks }}"
   when: config_tasks is defined
 
-- name: "container {{ container_name }}"
+- name: "container -- {{ container_name }}"
   docker_container:
     name:  "{{ container_name }}"
-    image: "{{ (repository + '/' + image_name) if repository is defined else image_name }}:{{ tag }}"
+    image: "{{ (docker_registry + '/' + image_name) if git_repo is defined else image_name }}:{{ tag }}"
     state: "{{ state }}"
     command: "{{ command | default(omit) }}"
     restart: "{{ restart | default(omit) }}"
