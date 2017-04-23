@@ -1,0 +1,5 @@
+---
+
+- name: restart Docker
+  service: name={{ docker_service }} state=restarted
+  become: True

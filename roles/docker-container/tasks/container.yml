@@ -1,0 +1,43 @@
+---
+
+- name: map container volumes
+  set_fact:
+    _mapped_data_volumes: >-
+      [
+        {% for v in (volumes | default([])) %}
+        "{{ container_data_directory }}/{{ v['src'] }}:{{ v['dest'] }}:{{ v['mount_mode'] }}",
+        {% endfor %}
+      ]
+
+- name: create container volumes
+  include_role: name=volume private=True
+  vars:
+    path: "{{ container_data_directory }}/{{ item }}"
+    owner: "{{ v['owner'] | default(omit) }}"
+    group: "{{ v['group'] | default(omit) }}"
+    mode: "{{ v['mode'] | default(omit) }}"
+    btrfs_subvolume: "{{ btrfs_volumes }}"
+  with_items: >-
+    [
+      {% for v in (volumes | default([])) %}
+      "{{ container_data_directory }}/{{ v['src'] }}",
+      {% endfor %}
+    ]
+  when: item.type is not defined or item.type == "directory"
+
+- name: "container {{ name }}"
+  docker_container:
+    name:  "{{ name }}"
+    image: "{{ repository }}/{{ image_name }}:{{ tag }}"
+    state: "{{ state }}"
+    command: "{{ command | default(omit) }}"
+    restart: "{{ restart | default(omit) }}"
+    restart_policy: "{{ restart_policy | default('always') }}"
+    expose: "{{ expose | default(omit) }}"
+    published_ports: "{{ published_ports | default(omit) }}"
+    links: "{{ links | default(omit) }}"
+    hostname: "{{ hostname | default(omit) }}"
+    volumes: "{{ volumes | default(omit) }}"
+    env: "{{ env | default(omit) }}"
+    tty: true
+    interactive: true

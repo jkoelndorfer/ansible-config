@@ -1,5 +1,5 @@
 - hosts: "{{ override_hosts | default('ansibletest') }}"
   roles:
-    - base
-    - common
-    - arch
+    - { role: base, tags: ['base'] }
+    - { role: common, tags: ['common'] }
+    - { role: arch, tags: ['arch'] }

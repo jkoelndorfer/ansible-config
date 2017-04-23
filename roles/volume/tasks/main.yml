@@ -1,0 +1,14 @@
+---
+
+# name, path, owner, group, and mode will bleed through to
+# subvolume.yml.
+- name: create btrfs subvolume -- {{ name | default(path) }}
+  include: roles/btrfs/tasks/subvolume.yml
+  when: btrfs_subvolume
+  static: False
+
+- name: configure directory -- {{ name | default(path) }}
+  file: path={{ path }} state=directory \
+        owner={{ owner }} group={{ group }} \
+        mode={{ mode }}
+  become: True

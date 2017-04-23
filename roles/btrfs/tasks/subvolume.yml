@@ -1,17 +1,16 @@
-- name: check for {{ name }} subvolume
+---
+
+- name: check for subvolume -- {{ name | default(path) }}
   command: btrfs subvolume show {{ path }}
   register: data_subvolume_result
+  become: True
   ignore_errors: True
   with_items: "{{ ansible_mounts }}"
   when:
     - item.mount == '/'
     - item.fstype == 'btrfs'
 
-- name: create {{ name }} subvolume
+- name: create subvolume -- {{ name | default(path) }}
   command: btrfs subvolume create {{ path }}
+  become: True
   when: data_subvolume_result | failed
-
-- file: path={{ path }} state=directory \
-        owner={{ owner | default('root') }} group={{ group | default('root') }} \
-        mode={{ mode | default('0700') }}
-

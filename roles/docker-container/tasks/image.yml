@@ -1,0 +1,17 @@
+---
+
+- name: map container image state
+  set_fact:
+    container_state: "{{ {'started': 'present', 'stopped': 'present'}.get(state, state) }}"
+
+- name: "container {{ name }} image"
+  docker_image:
+    name: "{{ image_name }}"
+    tag: "{{ tag }}"
+    path: "{{ build_path | default(omit) }}"
+    force: "{{ force | default(omit) }}"
+    nocache: "{{ nocache | default(omit) }}}"
+    repository: "{{ repository | default(omit) }}"
+    push: "{{ push | default(omit) }}"
+    state: "{{ container_state }}"
+    buildargs: "{{ buildargs | default(omit) }}"
