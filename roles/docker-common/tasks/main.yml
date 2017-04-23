@@ -1,0 +1,8 @@
+---
+
+- name: include OS-specific docker variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install Docker package
+  become: True
+  package: name={{ docker_package }} state=installed

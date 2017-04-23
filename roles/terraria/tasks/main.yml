@@ -1,10 +1,10 @@
-- include: roles/docker/tasks/image.yml
+- include: roles/docker-server/tasks/image.yml
   vars:
     task_name: Terraria server container image
     name: ryshe/terraria
     tag: latest
 
-- include: roles/docker/tasks/data.yml
+- include: roles/docker-server/tasks/data.yml
   vars:
     container_name: terraria
     owner: root
@@ -13,7 +13,7 @@
 
 - file: path={{ container_data_directory }}/terraria/main state=directory owner=root group=root mode=0755
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Terraria server container {{ item.world_name }}
     name:  terraria-{{ item.world_name }}

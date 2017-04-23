@@ -1,4 +1,4 @@
-- include: roles/docker/tasks/image.yml
+- include: roles/docker-server/tasks/image.yml
   vars:
     task_name: Mumble container image
     name: luzifer/mumble
@@ -7,7 +7,7 @@
 - include: config.yml
   when: (state == "present") or (state == "started")
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Mumble container
     name:  mumble

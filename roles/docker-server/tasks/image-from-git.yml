@@ -1,0 +1,23 @@
+- name: create container build directory
+  tempfile: state=directory
+  register: container_build_directory_result
+
+- name: set container build directory
+  set_fact:
+    container_build_directory: "{{ container_build_directory_result.path }}"
+
+- block:
+  - name: check out image repository
+    git:
+      repo: "{{ git_repo }}"
+      dest: "{{ container_build_directory }}/{{ name }}"
+      version: "{{ git_version | default('HEAD') }}"
+    delegate_to: localhost
+
+  - include: roles/docker-server/tasks/image.yml
+    vars:
+      path: "{{ container_build_directory }}/{{ name }}"
+
+  always:
+    - name: clean up container build directory
+      file: path={{ container_build_directory }} state=absent

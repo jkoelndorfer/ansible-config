@@ -1,7 +1,7 @@
 - name: "{{ task_name }} ({{ state }})"
   docker_container:
     name:  "{{ name }}"
-    image: "{{ image }}"
+    image: "{{ docker_registry + '/' + registry_image if registry_image else image }}"
     state: "{{ state }}"
     command: "{{ command | default(None) }}"
     restart: "{{ restart | default(false) }}"

@@ -1,7 +1,12 @@
 ---
 
+- name: configure docker registry credentials
+  shell: >-
+    docker run --rm -it registry:2 htpasswd -Bbn
+    {{ docker_registry_username }} {{ docker_registry_password }} > {{ docker_registry_auth_file }}
+
 - name: configure docker registry data volume
-  include: roles/docker/tasks/data.yml
+  include: roles/docker-server/tasks/data.yml
   vars:
     container_name: docker-registry
     owner: root
@@ -9,16 +14,20 @@
     mode: 0755
 
 - name: configure docker registry container
-  include: roles/docker/tasks/container.yml
+  include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Docker registry container
     name: docker-registry
     image: registry:2
     published_ports:
-      - "5000:5000"
+      - 5000:5000
     volumes:
+      - "{{ docker_registry_auth_file }}:/auth:ro"
       - "{{ container_data_directory }}/certs/docker_registry:/certs:ro"
-      - "{{ container_data_directory }}/docker-registry:/var/lib/registry:rw"
+      - "{{ container_data_directory }}/docker-registry/registry:/var/lib/registry:rw"
     env:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/fullchain.pem
       REGISTRY_HTTP_TLS_KEY: /certs/key.pem

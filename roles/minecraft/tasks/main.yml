@@ -1,4 +1,4 @@
-- include: roles/docker/tasks/image-from-git.yml
+- include: roles/docker-server/tasks/image-from-git.yml
   vars:
     task_name: Minecraft container image -- {{ item.name }}
     name: minecraft-ftb
@@ -8,7 +8,7 @@
       MODPACK_SERVER_ZIP_URL: "{{ item.server_zip_url }}"
   with_items: "{{ minecraft_servers }}"
 
-- include: roles/docker/tasks/data.yml
+- include: roles/docker-server/tasks/data.yml
   vars:
     container_name: minecraft-ftb-{{ item.short_name }}
     owner: root
@@ -16,7 +16,7 @@
     mode: '0755'
   with_items: "{{ minecraft_servers }}"
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Minecraft server container -- {{ item.name }}
     name:  minecraft-ftb-{{ item.short_name }}

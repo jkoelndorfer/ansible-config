@@ -1,5 +1,8 @@
----
+- name: restart docker service (if exists)
+  command: systemctl status docker
+  register: has_docker
+  ignore_errors: true
+  notify: restart docker service
 
-- name: restart Docker
+- name: restart docker service
   service: name={{ docker_service }} state=restarted
-  become: True

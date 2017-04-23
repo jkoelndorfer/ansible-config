@@ -1,10 +1,10 @@
-- include: roles/docker/tasks/image.yml
+- include: roles/docker-server/tasks/image.yml
   vars:
     task_name: Owncloud application image
     name: docker.io/owncloud
     tag: "{{ owncloud_version }}"
 
-- include: roles/docker/tasks/container.yml
+- include: roles/docker-server/tasks/container.yml
   vars:
     task_name: Owncloud application container
     name:  owncloud-app
