@@ -3,3 +3,6 @@
 
 # Ansible generates these
 *.retry
+
+# vagrant state
+.vagrant
