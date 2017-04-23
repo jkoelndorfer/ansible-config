@@ -2,13 +2,14 @@
 
 - name: local directory
   file: path={{ local_directory }} state=directory owner=root group=root mode=0755
-  become: true
+  become: True
   become_user: root
 
 - name: local tools repository
   git: repo={{ local_tools_repo }} dest={{ local_directory }}/tools
-  become: true
+  become: True
   become_user: root
 
 - name: local tools permissions
   file: path={{ local_directory }}/tools owner=root group=root mode=u+rwX,g=rX,o=rX recurse=true
+  become: True

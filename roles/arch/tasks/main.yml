@@ -1,5 +1,6 @@
 - name: install needed system packages
   package: name={{ item }} state=installed
+  become: True
   with_items:
     - base-devel
     - btrfs-progs

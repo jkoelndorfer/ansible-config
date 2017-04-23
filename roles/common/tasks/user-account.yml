@@ -9,8 +9,10 @@
 - name: Configure primary user
   user: name={{ primary_user_username }} shell={{ preferred_shell }} group=users groups={{ sudo_group }} \
         uid={{ primary_user_uid }} password={{ primary_user_password }}
+  become: True
 
 - name: Install zsh
   package: name={{ zsh_package }} state=installed
+  become: True
 
 - include: user-preferences.yml

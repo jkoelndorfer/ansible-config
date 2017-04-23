@@ -1,5 +1,6 @@
 - name: restart sshd
   service: name={{ sshd_service_name }} state=restarted
+  become: True
 
 - name: reload firewalld rules
   command: /usr/bin/firewall-cmd --reload
@@ -13,3 +14,4 @@
   # TODO: Is there a way to tell Docker to reconfigure iptables without
   # bouncing the entire service?
   notify: restart docker service (if exists)
+  become: True

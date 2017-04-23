@@ -3,6 +3,7 @@
 
 - name: Install utility packages
   package: name={{ item }} state=installed
+  become: True
   with_items: "{{ utility_packages }}"
 
 - include: user-account.yml
@@ -16,6 +17,7 @@
   become_user: root
 
 - name: sudo nopasswd configuration
+  become: True
   template: src=sudo-nopasswd.j2 dest=/etc/sudoers.d/sudo-nopasswd owner=root group=root mode=0400
             validate='visudo -cf %s'
 
