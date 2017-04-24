@@ -37,7 +37,7 @@
     state: "{{ state }}"
     command: "{{ command | default(omit) }}"
     restart: "{{ restart | default(omit) }}"
-    restart_policy: "{{ restart_policy | default('always') }}"
+    restart_policy: "{{ restart_policy | default('unless-stopped') }}"
     expose: "{{ expose | default(omit) }}"
     published_ports: "{{ published_ports | default(omit) }}"
     links: "{{ links | default(omit) }}"
