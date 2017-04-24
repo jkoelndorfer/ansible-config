@@ -1,28 +1,20 @@
-- include: roles/docker-server/tasks/image.yml
+- include_role: name=docker-container private=True
   vars:
-    task_name: Terraria server container image
-    name: ryshe/terraria
+    container_name: terraria-{{ tsrv.world_name }}
+    image_name: docker.io/ryshe/terraria
     tag: latest
-
-- include: roles/docker-server/tasks/data.yml
-  vars:
-    container_name: terraria
-    owner: root
-    group: root
-    mode: '0755'
-
-- file: path={{ container_data_directory }}/terraria/main state=directory owner=root group=root mode=0755
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Terraria server container {{ item.world_name }}
-    name:  terraria-{{ item.world_name }}
-    image: docker.io/ryshe/terraria:latest
-    command: "-world /world/{{ item.world_name }}.wld -autocreate {{ {'small': 1, 'medium': 2, 'large': 3 }[item.world_size] }}"
+    command: >-
+      -world /world/{{ tserv.world_name }}.wld
+      -autocreate {{ {'small': 1, 'medium': 2, 'large': 3 }[tserv.world_size] }}
     expose:
       - "7777"
     published_ports:
-      - "{{ item.port }}:7777"
+      - "{{ tserv.port }}:7777"
     volumes:
-      - "{{ container_data_directory }}/terraria/main:/world:rw"
+      - src: world
+        dest: /world
+        mount_mode: rw
   with_items: "{{ terraria_worlds }}"
+  loop_control:
+    loop_var: tserv
+  static: False
