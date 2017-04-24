@@ -25,7 +25,7 @@
       - src: registry
         dest: /var/lib/registry
         mount_mode: rw
-      - src: "{{ container_data_directory }}/le-gen/certs/docker_registry"
+      - src: "{{ container_data_directory }}/certs/docker_registry"
         dest: /certs
         mount_mode: ro
     env:

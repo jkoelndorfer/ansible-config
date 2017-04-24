@@ -11,7 +11,7 @@
     published_ports:
       - 80:80
     volumes:
-      - src: certs
+      - src: "{{ container_data_directory }}/certs"
         dest: /certs
         mount_mode: rw
       - src: cert_renew.yml
