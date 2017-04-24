@@ -1,5 +1,14 @@
 - hosts: "{{ override_hosts | default('ansibletest') }}"
   roles:
-    - { role: base, tags: ['base'] }
-    - { role: common, tags: ['common'] }
+    - { role: base, tags: ['always', 'base'] }
     - { role: arch, tags: ['arch'] }
+    - { role: common,  tags: ['common'] }
+    - { role: docker-server, tags: ['docker-server'] }
+    - { role: docker-registry, tags: ['docker-registry'] }
+    - { role: crashplan, tags: ['crashplan'] }
+    - { role: le-gen, tags: ['le-gen'] }
+    - { role: minecraft, tags: ['minecraft'] }
+    - { role: mumble, tags: ['mumble'] }
+    - { role: owncloud, tags: ['owncloud'] }
+    - { role: ssh, tags: ['ssh'] }
+    - { role: terraria, tags: ['terraria'] }
