@@ -1,23 +1,19 @@
-- include: roles/docker-server/tasks/image-from-git.yml
-  vars:
-    task_name: Crashplan image
-    name: docker-crashplan
-    git_repo: https://github.com/jkoelndorfer/docker-crashplan
-    tag: latest
+---
 
-- include: roles/docker-server/tasks/data.yml
+- include_role: name=docker-container private=True
   vars:
     container_name: crashplan
-    owner: root
-    group: root
-    mode: '0700'
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Crashplan container
-    name: crashplan
-    image: docker-crashplan:latest
+    image_name: docker-crashplan
+    tag: latest
+    git_repo: https://github.com/jkoelndorfer/docker-crashplan.git
     volumes:
-      - "/srv/data/hd0000:/srv/data/hd0000:rw"
-      - "/srv/data/container:/srv/data/container:rw"
-      - "{{ container_data_directory }}/crashplan:/var/crashplan:rw"
+      - src: /srv/data/hd0000
+        dest: /srv/data/hd0000
+        mount_mode: rw
+      - src: /srv/data/container
+        dest: /srv/data/container
+        mount_mode: rw
+      - src: crashplan
+        dest: /var/crashplan
+        mount_mode: rw
+  static: False
