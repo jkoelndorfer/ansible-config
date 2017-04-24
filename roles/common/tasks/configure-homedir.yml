@@ -20,4 +20,5 @@
     chdir: "{{ directory }}/dotfiles"
   become: True
   become_user: "{{ username }}"
+  ignore_errors: True
   when: dotfiles_checkout | changed
