@@ -1,30 +1,28 @@
-- include: roles/docker-server/tasks/image-from-git.yml
-  vars:
-    task_name: Minecraft container image -- {{ item.name }}
-    name: minecraft-ftb
-    tag: "{{ item.short_name }}-{{ item.version }}"
-    git_repo: https://github.com/jkoelndorfer/docker-ftb
-    buildargs:
-      MODPACK_SERVER_ZIP_URL: "{{ item.server_zip_url }}"
-  with_items: "{{ minecraft_servers }}"
+---
 
-- include: roles/docker-server/tasks/data.yml
+- include_role: name=docker-container private=True
   vars:
-    container_name: minecraft-ftb-{{ item.short_name }}
-    owner: root
-    group: root
-    mode: '0755'
-  with_items: "{{ minecraft_servers }}"
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Minecraft server container -- {{ item.name }}
-    name:  minecraft-ftb-{{ item.short_name }}
-    image: "minecraft-ftb:{{ item.short_name }}-{{ item.version }}"
+    container_name: minecraft-ftb-{{ mcserv.short_name }}
+    image_name: minecraft-ftb
+    tag: "{{ mcserv.short_name }}-{{ mcserv.version }}"
+    git_repo: https://github.com/jkoelndorfer/docker-ftb.git
     published_ports:
-      - "{{ item.port }}:25565"
+      - "{{ mcserv.port }}:25565"
+    buildargs:
+      MODPACK_SERVER_ZIP_URL: "{{ mcserv.server_zip_url }}"
     volumes:
-      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/backups:/minecraft/backups"
-      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/serverconf:/minecraft/serverconf"
-      - "{{ container_data_directory }}/minecraft-ftb-{{ item.short_name }}/world:/minecraft/world"
+      - src: backups
+        dest: /minecraft/backups
+        mount_mode: rw
+
+      - src: serverconf
+        dest: /minecraft/serverconf
+        mount_mode: rw
+
+      - src: world
+        dest: /minecraft/world
+        mount_mode: rw
+  static: False
   with_items: "{{ minecraft_servers }}"
+  loop_control:
+    loop_var: mcserv
