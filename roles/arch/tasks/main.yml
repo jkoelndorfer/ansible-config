@@ -1,3 +1,10 @@
+---
+
+# Not sure whyu this is necessary, but it is.
+- name: update pacman cache
+  shell: pacman -Sy --noconfirm
+  become: True
+
 - name: install needed system packages
   package: name={{ item }} state=installed
   become: True
