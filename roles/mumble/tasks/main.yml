@@ -1,17 +1,10 @@
-- include: roles/docker-server/tasks/image.yml
+---
+
+- include_role: name=docker-container private=True
   vars:
-    task_name: Mumble container image
-    name: luzifer/mumble
+    container_name: mumble
+    image_name: docker.io/luzifer/mumble
     tag: latest
-
-- include: config.yml
-  when: (state == "present") or (state == "started")
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Mumble container
-    name:  mumble
-    image: docker.io/luzifer/mumble:latest
     # This mumble container doesn't expose 64738/tcp like it should,
     # so we need to do it ourselves.
     expose:
@@ -21,7 +14,21 @@
       - "64738:64738"
       - "64738:64738/udp"
     volumes:
-      - "{{ container_config_directory }}/mumble:/config:rw"
-      - "{{ container_data_directory }}/certs/mumble/fullchain.pem:/config/ssl.crt:ro"
-      - "{{ container_data_directory }}/certs/mumble/key.pem:/config/ssl.key:ro"
-      - "{{ container_data_directory }}/mumble:/data:rw"
+      - src: config
+        dest: /config
+        mount_mode: rw
+
+      - src: "{{ container_data_directory }}/certs/fullchain.pem"
+        dest: /config/ssl.crt
+        mount_mode: ro
+        type: file
+
+      - src: "{{ container_data_directory }}/certs/key.pem"
+        dest: /config/ssl.key
+        mount_mode: ro
+        type: file
+
+      - src: data
+        dest: /data
+        mount_mode: rw
+  static: False
