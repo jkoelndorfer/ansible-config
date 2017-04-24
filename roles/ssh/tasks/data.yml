@@ -1,8 +1,0 @@
-- include: roles/docker-server/tasks/data.yml
-  vars:
-    container_name: ssh
-    owner: root
-    group: root
-    mode: '0755'
-
-- file: path={{ container_data_directory }}/ssh/home state=directory owner=root group=root mode=0755

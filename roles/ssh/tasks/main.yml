@@ -1,20 +1,13 @@
-- include_vars: secret_vars/user-account.yml
+- name: include user account variables
+  include_vars: secret_vars/user-account.yml
 
-- include: roles/docker-server/tasks/image-from-git.yml
+- include_role: name=docker-container private=True
   vars:
-    task_name: Fedora ssh image
-    name: fedora-shell
+    container_name: ssh
+    image_name: fedora-shell
     tag: latest
     git_repo: https://github.com/jkoelndorfer/docker-shell
     git_version: fedora
-
-- include: data.yml
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Fedora ssh container
-    name:  ssh
-    image: fedora-shell
     published_ports:
       - "{{ ssh_container_port }}:22"
       - "60000:60000/udp"
@@ -29,12 +22,22 @@
       - "60009:60009/udp"
     hostname: sh.segv.us
     volumes:
-      - "{{ container_data_directory }}/ssh/home:/home:rw"
-      - "{{ container_data_directory }}/ssh/host_keys:/etc/ssh/host_keys:rw"
+      - src: home
+        dest: /home
+        owner: root
+        group: root
+        mode: "0755"
+        mount_mode: rw
+
+      - src: host_keys
+        dest: /etc/ssh/host_keys
+        mount_mode: rw
     env:
       USER_NAME: "{{ primary_user_username }}"
       USER_SHELL: "{{ preferred_shell }}"
       USER_ID: "{{ primary_user_uid }}"
       TIMEZONE: "{{ timezone }}"
+  static: False
 
-- include: user-preferences.yml
+- name: configure user preferences
+  include: user-preferences.yml
