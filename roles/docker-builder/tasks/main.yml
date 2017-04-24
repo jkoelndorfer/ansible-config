@@ -1,5 +1,0 @@
----
-
-- name: start Docker service
-  service: name={{ docker_service }} state=started
-  become: True
