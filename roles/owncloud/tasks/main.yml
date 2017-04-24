@@ -1,52 +1,63 @@
-- include_vars: secret_vars/owncloud.yml
+- name: include owncloud secrets
+  include_vars: secret_vars/owncloud.yml
 
-- include: data.yml
-
-- include: roles/docker-server/tasks/image.yml
+- include_role: name=docker-container private=True
   vars:
-    task_name: Owncloud Postgres image
-    name: docker.io/postgres
+    container_name: owncloud-db
+    image_name: docker.io/postgres
     tag: "{{ owncloud_pg_version }}"
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: Owncloud Postgres container
-    name:  owncloud-db
-    image: "postgres:{{ owncloud_pg_version }}"
     volumes:
-      - "{{ container_data_directory }}/owncloud/db:/var/lib/postgresql/data"
+      - src: postgres
+        dest: /var/lib/postgresql/data
+        mount_mode: rw
     env:
       POSTGRES_USER:     "{{ owncloud_pg_username }}"
       POSTGRES_PASSWORD: "{{ owncloud_pg_password }}"
+  static: False
 
-- include: app.yml
-
-- include: roles/docker-server/tasks/image-from-git.yml
+- include_role: name=docker-container private=True
   vars:
-    task_name: Owncloud SSL proxy image
-    name: nginx-ssl-proxy
-    tag:  latest
+    container_name: owncloud-app
+    image_name: docker.io/owncloud
+    tag: "{{ owncloud_version }}"
+    links:
+      - owncloud-db:db
+    volumes:
+      - src: config
+        dest: /var/www/html/config
+        mount_mode: rw
+
+      - src: data
+        dest: /var/www/html/data
+        mount_mode: rw
+  static: False
+
+- include_role: name=docker-container private=True
+  vars:
+    container_name: nginx-ssl-proxy
+    image_name: nginx-ssl-proxy
     git_repo: https://github.com/jkoelndorfer/nginx-ssl-proxy
-
-- name: ssl proxy configuration directory
-  file: path={{ container_config_directory }}/ssl-proxy state=directory mode=0755
-
-- name: ssl proxy Diffie-Hellman parameters
-  command: openssl dhparam -out {{ container_config_directory }}/ssl-proxy/dhparam 2048 \
-           creates={{ container_config_directory }}/ssl-proxy/dhparam
-
-- include: roles/docker-server/tasks/container.yml
-  vars:
-    task_name: nginx SSL proxy container
-    name: nginx-ssl-proxy
-    image: nginx-ssl-proxy
+    config_tasks: roles/owncloud/tasks/ssl-proxy-config.yml
     published_ports: "443:443"
+    tag: latest
     links:
       - owncloud-app:owncloud
     volumes:
-      - "{{ container_data_directory }}/certs/owncloud/fullchain.pem:/etc/secrets/proxycert"
-      - "{{ container_data_directory }}/certs/owncloud/key.pem:/etc/secrets/proxykey"
-      - "{{ container_config_directory }}/ssl-proxy/dhparam:/etc/secrets/dhparam"
+      - src: dhparam
+        dest: /etc/secrets/dhparam
+        mount_mode: ro
+        type: file
+
+      - src: "{{ container_config_directory }}/certs/owncloud/fullchain.pem"
+        dest: /etc/secrets/proxycert
+        mount_mode: ro
+        type: file
+
+      - src: "{{ container_config_directory }}/certs/owncloud/key.pem"
+        dest: /etc/secrets/proxykey
+        mount_mode: ro
+        type: file
     env:
       ENABLE_SSL: true
       TARGET_SERVICE: owncloud
+  static: False

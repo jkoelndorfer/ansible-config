@@ -1,0 +1,6 @@
+---
+
+- name: ssl proxy Diffie-Hellman parameters
+  command: openssl dhparam -out {{ this_container_data_directory }}/dhparam 2048 \
+           creates={{ this_container_data_directory }}/dhparam
+  become: True
