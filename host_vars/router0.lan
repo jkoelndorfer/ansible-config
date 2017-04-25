@@ -52,6 +52,7 @@ router_alternate_addresses:
     client: 10.0.0.2/16
 
 router_firewall:
+  rule: []
   redirect:
     - name: cert_generation
       src: wan
