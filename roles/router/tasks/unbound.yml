@@ -1,9 +1,0 @@
----
-
-- name: configure unbound
-  copy:
-    src: files/unbound.conf
-    dest: /etc/unbound/unbound_ext.conf
-    owner: root
-    group: root
-    mode: 444

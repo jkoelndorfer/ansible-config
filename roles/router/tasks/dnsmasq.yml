@@ -1,6 +1,0 @@
----
-
-- lineinfile:
-    dest: /etc/dnsmasq.conf
-    regexp: "^port="
-    line: "port=530"

@@ -1,9 +1,0 @@
----
-
-ansible_user: root
-uci_config: {}
-uci_config_secrets: {}
-router_firewall:
-  redirect: []
-  rule: []
-router_alternate_addresses: []
