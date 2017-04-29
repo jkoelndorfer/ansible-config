@@ -1,0 +1,9 @@
+[Match]
+Name={{ wan_iface.name }}
+
+[Network]
+DHCP=yes
+{% for dns_server in router_dns_servers %}
+DNS={{ dns_server }}
+{% endfor -%}
+IPForward=yes
