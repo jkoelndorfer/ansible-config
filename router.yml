@@ -1,7 +1,7 @@
 ---
 
 - name: configure router
-  hosts: router0.lan
-  gather_facts: False
+  hosts: legion.segv.us
   roles:
+    - base
     - router
