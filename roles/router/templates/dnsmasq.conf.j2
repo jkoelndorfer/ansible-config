@@ -7,6 +7,9 @@ bogus-priv
 # from this file instead.
 no-resolv
 
+# Don't read hostnames from /etc/hosts
+no-hosts
+
 # Configure upstream DNS servers
 {% for dns_server in router_dns_servers -%}
 server={{ dns_server }}
