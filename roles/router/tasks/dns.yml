@@ -1,0 +1,23 @@
+---
+
+- name: create dns container
+  include_role: name=docker-container private=True
+  vars:
+    container_name: dnsmasq
+    image_name: docker.io/andyshinn/dnsmasq
+    tag: 2.76
+    capabilities:
+      - NET_ADMIN
+    config_tasks: roles/router/tasks/dns-config.yml
+    entrypoint: dnsmasq -d
+    network_mode: host
+    volumes:
+      - src: dnsmasq.conf
+        dest: /etc/dnsmasq.conf
+        type: file
+        mount_mode: ro
+
+      - src: dnsmasq-misc
+        dest: /var/lib/misc
+        mount_mode: rw
+  static: False

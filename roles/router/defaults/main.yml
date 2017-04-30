@@ -1,5 +1,7 @@
 ---
 
+dns_records: []
+router_dhcp_lease_max: 250
 router_dns_servers:
   - 8.8.8.8
   - 8.8.4.4

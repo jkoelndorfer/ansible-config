@@ -1,0 +1,70 @@
+---
+
+- name: include router secret vars
+  include_vars: secret_vars/router.yml
+
+- name: configure lan bridge
+  template:
+    src: bridge.netdev.j2
+    dest: "{{ systemd_network_dir }}/10-{{ bridge_name }}.netdev"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  vars:
+    bridge_name: "{{ router_lan_bridge_name }}"
+
+- name: configure lan interfaces links
+  template:
+    src: lan-iface.link.j2
+    dest: "{{ systemd_network_dir }}/20-{{ lan_iface.name }}.link"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  with_items: "{{ router_lan_interfaces }}"
+  loop_control:
+    loop_var: lan_iface
+
+- name: configure wan link
+  template:
+    src: wan-iface.link.j2
+    dest: "{{ systemd_network_dir }}/20-{{ wan_iface.name }}.link"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  vars:
+    wan_iface: "{{ router_wan_interface }}"
+
+- name: configure lan interfaces networks
+  template:
+    src: lan-iface.network.j2
+    dest: "{{ systemd_network_dir }}/30-{{ lan_iface.name }}.network"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  with_items: "{{ router_lan_interfaces }}"
+  loop_control:
+    loop_var: lan_iface
+
+- name: configure lan
+  template:
+    src: lan-bridge.network.j2
+    dest: "{{ systemd_network_dir }}/30-{{ router_lan_bridge_name }}.network"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+
+- name: configure wan
+  template:
+    src: wan-iface.network.j2
+    dest: "{{ systemd_network_dir }}/30-{{ wan_iface.name }}.network"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  vars:
+    wan_iface: "{{ router_wan_interface }}"
