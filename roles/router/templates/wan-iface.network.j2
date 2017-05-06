@@ -2,7 +2,7 @@
 Name={{ wan_iface.name }}
 
 [Network]
-DHCP=yes
+DHCP=v4
 {% for dns_server in router_dns_servers %}
 DNS={{ dns_server }}
 {% endfor -%}
