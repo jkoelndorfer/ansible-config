@@ -2,10 +2,11 @@
 
 - include_role: name=docker-container private=True
   vars:
-    container_name: minecraft-ftb-{{ mcserv.short_name }}
-    image_name: minecraft-ftb
-    tag: "{{ mcserv.short_name }}-{{ mcserv.version }}"
-    git_repo: https://github.com/jkoelndorfer/docker-ftb.git
+    container_name: minecraft-{{ mcserv.name | lower | replace(' ', '-') }}
+    image_name: minecraft
+    tag: "{{ mcserv.modpack_name | lower | replace(' ', '-') }}-{{ mcserv.modpack_version }}"
+    git_repo: https://github.com/jkoelndorfer/dockerfiles.git
+    build_subdirectory: "minecraft/forge-server"
     published_ports:
       - "{{ mcserv.port }}:25565"
     buildargs:

@@ -17,11 +17,11 @@ dns_records:
     value: 10.0.0.1
 
 minecraft_servers:
-  - name: FTB Beyond 1.10
+  - name: Invasion JMG
     port: 25565
-    short_name: beyond-1.10
-    version: 1.2.1
-    server_zip_url: http://ftb.cursecdn.com/FTB2/modpacks/FTBBeyond/1_2_1/FTBBeyondServer.zip
+    modpack_name: Invasion
+    modpack_version: 1.0.5
+    server_zip_url: https://minecraft.curseforge.com/projects/invasion/files/2408077/download
 
 terraria_worlds:
   - world_name: main
