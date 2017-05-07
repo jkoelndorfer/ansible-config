@@ -10,7 +10,7 @@
   run_once: True
   connection: local
   roles:
-    - { role: docker-builder, tags: ['always'], docker_server: False }
+    - { role: docker-common, tags: ['always'], docker_server: False }
 
 - name: configure ansible base
   hosts: container-servers
