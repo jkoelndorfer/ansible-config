@@ -1,0 +1,20 @@
+---
+
+- name: deploy Internet gateway service file
+  template:
+    src: internet-gateway.service.j2
+    dest: "{{ systemd_service_directory }}/internet-gateway.service"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  register: internet_gateway_service
+
+- name: reload systemd unit file
+  command: systemctl daemon-reload
+  when: internet_gateway_service | changed
+  become: True
+
+- name: start Internet gateway service
+  service: name=internet-gateway state=started enabled=True
+  become: True

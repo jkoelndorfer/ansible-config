@@ -10,3 +10,6 @@
 
 - name: configure DNS service
   include: dns.yml
+
+- name: configure Internet gateway service
+  include: internet-gateway.yml

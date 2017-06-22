@@ -1,0 +1,21 @@
+[Unit]
+Description=Internet gateway configuration
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/iptables -N INETGW
+ExecStart=/usr/bin/iptables -I FORWARD -j INETGW
+ExecStart=/usr/bin/iptables -I INETGW -i lanbr -o lanbr -j ACCEPT
+ExecStart=/usr/bin/iptables -I INETGW -i lanbr -o wan -j ACCEPT
+ExecStart=/usr/bin/iptables -I INETGW -i wan -o lanbr -j ACCEPT
+ExecStart=/usr/bin/iptables -A FORWARD -j REJECT
+ExecStop=/usr/bin/iptables -D FORWARD -j INETGW
+ExecStop=/usr/bin/iptables -D INETGW -i lanbr -o lanbr -j ACCEPT
+ExecStop=/usr/bin/iptables -D INETGW -i lanbr -o wan -j ACCEPT
+ExecStop=/usr/bin/iptables -D INETGW -i wan -o lanbr -j ACCEPT
+ExecStop=/usr/bin/iptables -D FORWARD -j REJECT
+ExecStop=/usr/bin/iptables -X INETGW
+
+[Install]
+WantedBy=network-online.target
