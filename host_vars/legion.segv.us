@@ -20,8 +20,8 @@ minecraft_servers:
   - name: Invasion JMG
     port: 25565
     modpack_name: Invasion
-    modpack_version: 1.0.5
-    server_zip_url: https://minecraft.curseforge.com/projects/invasion/files/2408077/download
+    modpack_version: 1.0.8
+    server_zip_url: https://minecraft.curseforge.com/projects/invasion/files/2434092/download
 
 terraria_worlds:
   - world_name: main
