@@ -10,11 +10,34 @@
   become: True
   register: internet_gateway_service
 
+- name: create dhcpcd WAN override directory
+  file:
+    path: "{{ systemd_service_directory }}/dhcpcd@{{ router_wan_interface.name }}.service.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0555
+  become: True
+
+- name: deploy dhcpcd WAN interface service
+  template:
+    src: dhcpcd@wan.service.j2
+    dest: "{{ systemd_service_directory }}/dhcpcd@{{ router_wan_interface.name }}.service.d/override.conf"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  register: dhcpcd_wan_service
+
 - name: reload systemd unit file
   command: systemctl daemon-reload
-  when: internet_gateway_service | changed
+  when: (internet_gateway_service | changed) or (dhcpcd_wan_service | changed)
   become: True
 
 - name: start Internet gateway service
   service: name=internet-gateway state=started enabled=True
+  become: True
+
+- name: start dhcpcd WAN service
+  service: name=dhcpcd@wan state=started enabled=True
   become: True
