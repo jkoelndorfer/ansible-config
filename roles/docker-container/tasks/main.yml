@@ -1,5 +1,10 @@
 ---
 
+- name: determine if become is used locally for Docker commands
+  run_once: True
+  set_fact:
+    docker_local_become: "{{ docker_local_become | default(True) }}"
+
 - name: docker image | {{ container_name }}
   include: image.yml
 

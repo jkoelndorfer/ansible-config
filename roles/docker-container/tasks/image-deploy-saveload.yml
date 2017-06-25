@@ -1,0 +1,25 @@
+---
+
+- name: get image ID | {{ container_name }}
+  delegate_to: localhost
+  become: "{{ docker_local_become }}"
+  shell: docker images {{ image_name | quote }}:{{ tag | quote }} -q --no-trunc
+  register: docker_container_image_id_result
+
+- name: set image ID fact
+  set_fact:
+    docker_container_image_id: "{{ docker_container_image_id_result.stdout | trim }}"
+
+- name: check if remote host already has image | {{ container_name }}
+  shell: docker images -a -q --no-trunc | grep -q ^{{ docker_container_image_id | quote }}\$
+  become: True
+  register: docker_container_remote_image_result
+  changed_when: docker_container_remote_image_result.rc != 0
+  failed_when: False
+
+- block:
+  - name: create temporary image file | {{ container_name }}
+
+  - name: save Docker image locally | {{ container_name }}
+
+  when: docker_container_remote_image_result | changed
