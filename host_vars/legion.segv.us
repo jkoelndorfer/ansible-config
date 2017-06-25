@@ -16,6 +16,8 @@ dns_records:
   - name: sh.segv.us
     value: 10.0.0.1
 
+dns_server: 10.0.0.1
+
 minecraft_servers:
   - name: Invasion JMG
     port: 25565

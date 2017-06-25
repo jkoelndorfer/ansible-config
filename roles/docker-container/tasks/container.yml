@@ -37,6 +37,7 @@
     state: "{{ state }}"
     capabilities: "{{ capabilities | default(omit) }}"
     command: "{{ command | default(omit) }}"
+    dns_servers: "{{ dns | default(dns_server) }}"
     entrypoint: "{{ entrypoint | default(omit) }}"
     network_mode: "{{ network_mode | default(omit) }}"
     restart: "{{ restart | default(omit) }}"
