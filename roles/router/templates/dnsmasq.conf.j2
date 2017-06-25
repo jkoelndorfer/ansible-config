@@ -21,6 +21,8 @@ address=/{{ dns_record.name }}/{{ dns_record.value }}
 {% endfor %}
 
 interface={{ router_lan_bridge_name }}
+interface=docker0
+no-dhcp-interface=docker0
 
 # Set the "all subnets are local" flag
 dhcp-option=27,1
