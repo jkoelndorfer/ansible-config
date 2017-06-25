@@ -2,7 +2,5 @@
 Name={{ wan_iface.name }}
 
 [Network]
-{% for dns_server in router_dns_servers %}
-DNS={{ dns_server }}
-{% endfor -%}
+DNS=127.0.0.1
 IPForward=yes
