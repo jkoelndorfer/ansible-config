@@ -33,6 +33,7 @@
       state: "{{ container_state }}"
       buildargs: "{{ buildargs | default({}) }}"
     when: git_repo is defined
+    register: container_image_build
     delegate_to: localhost
 
   - name: "push container image -- {{ container_name }}"
@@ -40,7 +41,7 @@
       docker tag "{{ image_name }}:{{ tag }}" "{{ docker_registry }}/{{ image_name }}:{{ tag }}" &&
       docker push "{{ docker_registry }}/{{ image_name }}:{{ tag }}"
     connection: local
-    when: git_repo is defined
+    when: (git_repo is defined) and (container_image_build | changed)
 
   always:
     - name: clean up container build directory
