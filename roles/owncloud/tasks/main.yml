@@ -48,12 +48,12 @@
         mount_mode: ro
         type: file
 
-      - src: "{{ container_config_directory }}/certs/owncloud/fullchain.pem"
+      - src: "{{ container_data_directory }}/certs/owncloud/fullchain.pem"
         dest: /etc/secrets/proxycert
         mount_mode: ro
         type: file
 
-      - src: "{{ container_config_directory }}/certs/owncloud/key.pem"
+      - src: "{{ container_data_directory }}/certs/owncloud/key.pem"
         dest: /etc/secrets/proxykey
         mount_mode: ro
         type: file
