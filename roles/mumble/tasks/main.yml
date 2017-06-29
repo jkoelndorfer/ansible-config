@@ -18,12 +18,12 @@
         dest: /config
         mount_mode: rw
 
-      - src: "{{ container_data_directory }}/certs/fullchain.pem"
+      - src: "{{ container_data_directory }}/certs/mumble/fullchain.pem"
         dest: /config/ssl.crt
         mount_mode: ro
         type: file
 
-      - src: "{{ container_data_directory }}/certs/key.pem"
+      - src: "{{ container_data_directory }}/certs/mumble/key.pem"
         dest: /config/ssl.key
         mount_mode: ro
         type: file
