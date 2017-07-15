@@ -1,4 +1,10 @@
 - hosts: all
+  gather_facts: False
+  tasks:
+    - name: install Python 2
+      raw: pacman -Sy --noconfirm python2
+
+- hosts: all
   connection: local
   gather_facts: False
   tasks:
