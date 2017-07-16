@@ -2,6 +2,7 @@ ansibletest ansible_python_interpreter=/usr/bin/python2 ansible_ssh_common_args=
 
 [arch]
 legion.segv.us
+deathwing
 
 [production]
 legion.segv.us
@@ -9,3 +10,6 @@ router0.lan
 
 [container-servers]
 legion.segv.us
+
+[workstations]
+deathwing
