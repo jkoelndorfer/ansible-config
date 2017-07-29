@@ -8,4 +8,5 @@ router_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
 router_lan_bridge_name: lanbr
+router_static_routes: []
 systemd_network_dir: /etc/systemd/network

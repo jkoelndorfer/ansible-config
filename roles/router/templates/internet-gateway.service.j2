@@ -15,6 +15,9 @@ ExecStart=/usr/bin/iptables -A FORWARD -j REJECT
 {% for subnet in router_masquerade_subnets -%}
 ExecStart=/usr/bin/iptables -t nat -I POSTROUTING ! -o {{ router_lan_bridge_name }} -s {{ subnet }} -j MASQUERADE
 {% endfor %}
+{% for route in router_static_routes -%}
+ExecStart=/usr/bin/ip route add {{ route["subnet"] }} dev {{ route["dev"] }} via {{ route["via"] }} onlink
+{% endfor %}
 
 ExecStop=/usr/bin/iptables -D FORWARD -j REJECT
 ExecStop=/usr/bin/iptables -D FORWARD -j INETGW
@@ -22,4 +25,7 @@ ExecStop=/usr/bin/iptables -F INETGW
 ExecStop=/usr/bin/iptables -X INETGW
 {% for subnet in router_masquerade_subnets -%}
 ExecStop=-/usr/bin/iptables -t nat -D POSTROUTING ! -o {{ router_lan_bridge_name }} -s {{ subnet }} -j MASQUERADE
+{% endfor %}
+{% for route in router_static_routes -%}
+ExecStop=/usr/bin/ip route del {{ route["subnet"] }} dev {{ route["dev"] }} via {{ route["via"] }} onlink
 {% endfor %}
