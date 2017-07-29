@@ -6,3 +6,6 @@
 
 # vagrant state
 .vagrant
+
+# Python virtualenv
+.venv
