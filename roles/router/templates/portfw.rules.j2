@@ -1,0 +1,12 @@
+#!/bin/bash
+
+{% for rule in router_port_forwards -%}
+/usr/bin/iptables -t nat \
+                  -A PORTFW \
+                  -p {{ rule["proto"] }} \
+                  -m {{ rule["proto"] }} \
+                  --dport {{ rule.get("srcport", rule["port"]) }} \
+                  -j DNAT \
+                  --to-destination {{ rule["ip"] }}:{{ rule.get("dstport", rule["port"]) }} \
+                  -m comment --comment "{{ rule["comment"] }}"
+{% endfor -%}

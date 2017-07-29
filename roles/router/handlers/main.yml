@@ -1,0 +1,13 @@
+---
+
+- name: reload systemd unit files
+  command: systemctl daemon-reload
+  become: True
+
+- name: restart Internet gateway service
+  service: name=internet-gateway state=restarted enabled=True
+  become: True
+
+- name: restart port forwarding service
+  service: name=portfw state=restarted
+  become: True

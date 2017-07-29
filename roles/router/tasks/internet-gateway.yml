@@ -8,7 +8,33 @@
     group: root
     mode: 0444
   become: True
-  register: internet_gateway_service
+  notify:
+    - reload systemd unit files
+    - restart Internet gateway service
+
+- name: deploy port forwarding service file
+  template:
+    src: portfw.service.j2
+    dest: "{{ systemd_service_directory }}/portfw.service"
+    owner: root
+    group: root
+    mode: 0444
+  become: True
+  notify:
+    - reload systemd unit files
+    - restart port forwarding service
+
+- name: deploy port forwarding rules file
+  template:
+    src: portfw.rules.j2
+    dest: "{{ portfw_rules_file }}"
+    owner: root
+    group: root
+    mode: 0555
+  become: True
+  notify:
+    - reload systemd unit files
+    - restart port forwarding service
 
 - name: create dhcpcd WAN override directory
   file:
@@ -27,15 +53,18 @@
     group: root
     mode: 0444
   become: True
+  notify: reload systemd unit files
   register: dhcpcd_wan_service
 
-- name: reload systemd unit file
-  command: systemctl daemon-reload
-  when: (internet_gateway_service | changed) or (dhcpcd_wan_service | changed)
-  become: True
+- name: run handlers
+  meta: flush_handlers
 
 - name: start Internet gateway service
   service: name=internet-gateway state=started enabled=True
+  become: True
+
+- name: start port forwarding service
+  service: name=portfw state=started enabled=True
   become: True
 
 - name: start dhcpcd WAN service

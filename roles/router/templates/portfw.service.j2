@@ -1,0 +1,16 @@
+[Unit]
+Description=Router port forwarding
+Requires=internet-gateway.service
+After=internet-gateway.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStart=-/usr/bin/iptables -t nat -N PORTFW
+ExecStart=/usr/bin/iptables -t nat -I PREROUTING -j PORTFW
+ExecStart={{ portfw_rules_file }}
+
+ExecStop=/usr/bin/iptables -t nat -F PORTFW
+ExecStop=/usr/bin/iptables -t nat -D PREROUTING -j PORTFW
+ExecStop=-/usr/bin/iptables -t nat -X PORTFW
