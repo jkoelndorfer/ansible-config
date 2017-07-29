@@ -12,8 +12,14 @@ ExecStart=/usr/bin/iptables -I INETGW -i {{ router_lan_bridge_name }} -o {{ rout
 ExecStart=/usr/bin/iptables -I INETGW -i {{ router_lan_bridge_name }} -o {{ router_wan_interface.name }} -j ACCEPT
 ExecStart=/usr/bin/iptables -I INETGW -i {{ router_wan_interface.name }} -o {{ router_lan_bridge_name }} -j ACCEPT
 ExecStart=/usr/bin/iptables -A FORWARD -j REJECT
+{% for subnet in router_masquerade_subnets -%}
+ExecStart=/usr/bin/iptables -t nat -I POSTROUTING ! -o {{ router_lan_bridge_name }} -s {{ subnet }} -j MASQUERADE
+{% endfor %}
 
 ExecStop=/usr/bin/iptables -D FORWARD -j REJECT
 ExecStop=/usr/bin/iptables -D FORWARD -j INETGW
 ExecStop=/usr/bin/iptables -F INETGW
 ExecStop=/usr/bin/iptables -X INETGW
+{% for subnet in router_masquerade_subnets -%}
+ExecStop=-/usr/bin/iptables -t nat -D POSTROUTING ! -o {{ router_lan_bridge_name }} -s {{ subnet }} -j MASQUERADE
+{%- endfor %}

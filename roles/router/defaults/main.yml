@@ -1,6 +1,7 @@
 ---
 
 dns_records: []
+router_masquerade_subnets: []
 router_port_forwards: []
 router_dhcp_lease_max: 250
 router_dns_servers:
