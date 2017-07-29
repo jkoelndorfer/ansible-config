@@ -22,4 +22,4 @@ ExecStop=/usr/bin/iptables -F INETGW
 ExecStop=/usr/bin/iptables -X INETGW
 {% for subnet in router_masquerade_subnets -%}
 ExecStop=-/usr/bin/iptables -t nat -D POSTROUTING ! -o {{ router_lan_bridge_name }} -s {{ subnet }} -j MASQUERADE
-{%- endfor %}
+{% endfor %}
