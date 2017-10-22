@@ -6,7 +6,5 @@ redirect_url: https://cloud.koelndorfer.com
 certs:
   docker_registry:
     - docker.segv.us
-  mumble:
-    - mumble.segv.us
   owncloud:
     - cloud.koelndorfer.com

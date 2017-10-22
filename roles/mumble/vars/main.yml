@@ -1,4 +1,0 @@
-# mumble_uid should be the user ID that the mumble service is running under in the container
-mumble_uid: 1000
-mumble_max_users: 10
-mumble_server_password: TheG00dDoctor

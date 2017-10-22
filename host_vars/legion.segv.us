@@ -10,9 +10,6 @@ dns_records:
   - name: minecraft.segv.us
     value: 10.0.0.1
 
-  - name: mumble.segv.us
-    value: 10.0.0.1
-
   - name: sh.segv.us
     value: 10.0.0.1
 

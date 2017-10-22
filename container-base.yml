@@ -24,7 +24,6 @@
   become_user: root
   roles:
     - { role: docker-registry, tags: ['docker-registry'] }
-    - { role: mumble, tags: ['mumble'] }
     - { role: owncloud, tags: ['owncloud'] }
     - { role: ssh, tags: ['ssh'] }
     - { role: le-gen, tags: ['le-gen'] }
