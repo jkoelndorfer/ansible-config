@@ -1,3 +1,9 @@
+# localhost host variables
+#
+# This is needed to permit running Ansible in a virtualenv on the
+# provisioning host.
+host_vars/localhost
+
 # vim swap files
 .*.swp
 
