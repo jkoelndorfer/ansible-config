@@ -1,0 +1,28 @@
+---
+
+- name: create syncthing group
+  group:
+    name: syncthing
+    gid: "{{ syncthing_gid }}"
+
+- name: create syncthing user
+  user:
+    name: syncthing
+    comment: 'syncthing user'
+    uid: "{{ syncthing_uid }}"
+
+- include_role: name=docker-container private=True
+  vars:
+    container_name: syncthing
+    image_name: docker.io/syncthing/syncthing
+    tag: "{{ syncthing_version }}"
+    env:
+      PUID: "{{ syncthing_uid }}"
+      PGID: "{{ syncthing_gid }}"
+    published_ports:
+      - "{{ syncthing_port }}:22000"
+    volumes:
+      - src: data
+        dest: /var/syncthing
+        mount_mode: rw
+  static: False

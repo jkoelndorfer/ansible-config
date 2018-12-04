@@ -28,5 +28,6 @@
     - { role: ssh, tags: ['ssh'] }
     - { role: le-gen, tags: ['le-gen'] }
     - { role: crashplan, tags: ['crashplan'] }
+    - { role: syncthing, tags: ['syncthing'] }
     - { role: terraria, tags: ['terraria'] }
     - { role: minecraft, tags: ['minecraft'] }
