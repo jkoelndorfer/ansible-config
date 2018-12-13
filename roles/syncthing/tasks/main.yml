@@ -20,6 +20,7 @@
       PUID: "{{ syncthing_uid }}"
       PGID: "{{ syncthing_gid }}"
     published_ports:
+      - "127.0.0.1:{{ syncthing_gui_port }}:{{ syncthing_gui_port }}"
       - "{{ syncthing_port }}:22000"
     volumes:
       - src: data
