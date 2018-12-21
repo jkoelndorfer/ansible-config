@@ -13,8 +13,5 @@
     - btrfs-progs
     - python
 
-- name: install cower
-  include: aur-pkg.yml pkg_name=cower
-
-- name: install pacaur
-  include: aur-pkg.yml pkg_name=pacaur
+- name: install yay
+  include: aur-pkg.yml pkg_name=yay
