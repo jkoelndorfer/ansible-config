@@ -1,6 +1,6 @@
 ---
 
-# Not sure whyu this is necessary, but it is.
+# Not sure why this is necessary, but it is.
 - name: update pacman cache
   shell: pacman -Sy --noconfirm
   become: True
