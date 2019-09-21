@@ -1,0 +1,11 @@
+---
+
+lan_bridge_name: lanbr
+
+dnsmasq_upstream_dns_servers:
+  - 8.8.8.8
+  - 8.8.4.4
+
+dns_records:
+  - name: legion.segv.us
+    value: 10.0.0.1

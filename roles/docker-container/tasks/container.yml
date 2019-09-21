@@ -1,14 +1,13 @@
 ---
 
 - name: create container data volume | {{ container_name }}
-  include_role: name=volume private=True
+  include_role: name=volume
   vars:
     path: "{{ container_data_directory }}/{{ container_name }}"
     owner: root
     group: root
     mode: 0755
     btrfs_subvolume: btrfs_volumes
-  static: True
 
 - name: create container data directories | {{ container_name }}
   file:

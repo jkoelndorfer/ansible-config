@@ -1,0 +1,10 @@
+---
+
+- name: copy dnsmasq configuration
+  template:
+    src: dnsmasq.conf.j2
+    dest: "{{ this_container_data_directory }}/dnsmasq.conf"
+    owner: root
+    group: root
+    mode: 0444
+  become: True

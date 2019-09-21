@@ -1,0 +1,33 @@
+# Never forward plain names (without a dot or domain part)
+domain-needed
+# Never forward addresses in the non-routed address spaces.
+bogus-priv
+
+# Don't use resolv.conf for upstream DNS servers. Get them
+# from this file instead.
+no-resolv
+
+# Don't read hostnames from /etc/hosts
+no-hosts
+
+# Configure upstream DNS servers
+{% for dns_server in dnsmasq_upstream_dns_servers -%}
+server={{ dns_server }}
+{% endfor %}
+
+# Defined override addresses
+{% for dns_record in dns_records -%}
+address=/{{ dns_record.name }}/{{ dns_record.value }}
+{% endfor %}
+
+interface={{ lan_bridge_name }}
+interface=docker0
+no-dhcp-interface=docker0
+
+# Set the "all subnets are local" flag
+dhcp-option=27,1
+
+dhcp-lease-max=250
+dhcp-leasefile=/var/lib/misc/dnsmasq.leases
+dhcp-authoritative
+dhcp-range=10.0.1.1,10.0.1.250,12h

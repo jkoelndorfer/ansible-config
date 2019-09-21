@@ -23,11 +23,5 @@
   become: true
   become_user: root
   roles:
-    - { role: docker-registry, tags: ['docker-registry'] }
-    - { role: owncloud, tags: ['owncloud'] }
-    - { role: ssh, tags: ['ssh'] }
-    - { role: le-gen, tags: ['le-gen'] }
-    - { role: crashplan, tags: ['crashplan'] }
     - { role: syncthing, tags: ['syncthing'] }
-    - { role: terraria, tags: ['terraria'] }
-    - { role: minecraft, tags: ['minecraft'] }
+    - { role: dnsmasq,   tags: ['dnsmasq'] }
